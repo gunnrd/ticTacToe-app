@@ -5,6 +5,7 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.tictactoe.App
+import com.example.tictactoe.GameManager
 import com.example.tictactoe.R
 import com.example.tictactoe.api.data.Game
 import com.example.tictactoe.api.data.GameState
@@ -89,7 +90,36 @@ object GameService {
     }
 
     fun joinGame(playerId: String, gameId: String, callback: GameServiceCallback) {
+        val url = "https://generic-game-service.herokuapp.com/Game/$gameId/join"
+        //val url = APIEndPoints.JOIN_GAME.url
 
+        val requestData = JSONObject()
+
+        requestData.put("player", playerId)
+
+        val request = object : JsonObjectRequest(Method.POST, url, requestData,
+                {
+                    val game = Gson().fromJson(it.toString(0), Game::class.java)
+
+                    println(it.toString(0))
+                    println(game)
+
+                    callback(game, null)
+                    Log.d("GameService: createGame()", "Game successfully joined")
+                }, {
+
+            callback(null, it.networkResponse.statusCode)
+            Log.d("GameService: createGame()", "Error joining new game")
+        }) {
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Content-Type"] = "application/json"
+                headers["Game-Service-Key"] = context.getString(R.string.game_service_key)
+                return headers
+            }
+        }
+
+        requestQueue.add(request)
     }
 
     fun updateGame(gameId: String, gameState: GameState, callback: GameServiceCallback) {

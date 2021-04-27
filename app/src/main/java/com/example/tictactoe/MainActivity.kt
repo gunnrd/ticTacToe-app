@@ -6,6 +6,7 @@ import android.util.Log
 import com.example.tictactoe.databinding.ActivityMainBinding
 import com.example.tictactoe.dialogs.CreateGameDialog
 import com.example.tictactoe.dialogs.GameDialogListener
+import com.example.tictactoe.dialogs.JoinGameDialog
 
 class MainActivity : AppCompatActivity(), GameDialogListener {
 
@@ -23,6 +24,9 @@ class MainActivity : AppCompatActivity(), GameDialogListener {
         }
 
         //TODO join game button listener
+        binding.buttonJoinGame.setOnClickListener {
+            joinGame()
+        }
     }
 
     private fun createNewGame(){
@@ -32,6 +36,8 @@ class MainActivity : AppCompatActivity(), GameDialogListener {
 
     private fun joinGame(){
         //TODO
+        val dialog = JoinGameDialog()
+        dialog.show(supportFragmentManager,"CreateGameDialogFragment")
     }
 
     override fun onDialogCreateGame(player: String) {

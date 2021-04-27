@@ -9,10 +9,10 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.tictactoe.GameActivity
 import com.example.tictactoe.GameManager
-import com.example.tictactoe.databinding.DialogCreateGameBinding
+import com.example.tictactoe.databinding.DialogJoinGameBinding
 import java.lang.ClassCastException
 
-class CreateGameDialog(): DialogFragment() {
+class JoinGameDialog(): DialogFragment() {
 
     private lateinit var listener: GameDialogListener
 
@@ -20,15 +20,19 @@ class CreateGameDialog(): DialogFragment() {
         return activity?.let {
             val builder: AlertDialog.Builder = AlertDialog.Builder(it)
             val inflater = requireActivity().layoutInflater
-            val binding = DialogCreateGameBinding.inflate(inflater)
+            val binding = DialogJoinGameBinding.inflate(inflater)
 
             builder.apply {
-                setTitle("Create game")
-                setPositiveButton("Create") { _, _ ->
-                    if(binding.playerName.text.toString() != ""){
-                        listener.onDialogCreateGame(binding.playerName.text.toString())
-                        GameManager.player = binding.playerName.text.toString()
-                        GameManager.createGame()
+                setTitle("Join game")
+                setPositiveButton("Join") { _, _ ->
+                    if(binding.joinGamePlayerName.text.toString() != ""){
+                        listener.onDialogJoinGame(
+                            binding.joinGamePlayerName.text.toString(),
+                            binding.joinGameId.text.toString())
+
+                        GameManager.player = binding.joinGamePlayerName.text.toString()
+                        GameManager.gameId = binding.joinGameId.text.toString()
+                        GameManager.joinGame()
                         startActivity(Intent(context, GameActivity::class.java))
                     } else {
                         Toast.makeText(it, "Player name is required", Toast.LENGTH_SHORT).show()
