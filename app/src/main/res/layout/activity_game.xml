@@ -29,6 +29,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:text=""
+                android:textAlignment="center"
+                android:textSize="50sp"
                 android:background="@color/teal_200" />
 
             <TextView
@@ -40,6 +42,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:text=""
+                android:textAlignment="center"
+                android:textSize="50sp"
                 android:background="@color/teal_200" />
 
             <TextView
@@ -51,6 +55,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:text=""
+                android:textAlignment="center"
+                android:textSize="50sp"
                 android:background="@color/teal_200" />
 
         </LinearLayout>
@@ -69,6 +75,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:text=""
+                android:textAlignment="center"
+                android:textSize="50sp"
                 android:background="@color/teal_200" />
 
             <TextView
@@ -80,6 +88,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:text=""
+                android:textAlignment="center"
+                android:textSize="50sp"
                 android:background="@color/teal_200" />
 
             <TextView
@@ -91,6 +101,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:text=""
+                android:textAlignment="center"
+                android:textSize="50sp"
                 android:background="@color/teal_200" />
 
         </LinearLayout>
@@ -109,6 +121,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:text=""
+                android:textAlignment="center"
+                android:textSize="50sp"
                 android:background="@color/teal_200" />
 
             <TextView
@@ -120,6 +134,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:text=""
+                android:textAlignment="center"
+                android:textSize="50sp"
                 android:background="@color/teal_200" />
 
             <TextView
@@ -131,6 +147,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:text=""
+                android:textAlignment="center"
+                android:textSize="50sp"
                 android:background="@color/teal_200" />
 
         </LinearLayout>

@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">Tic tac toe</string>
+
+    <string name="protocol">https://</string>
+    <string name="domain">generic-game-service.herokuapp.com</string>
+    <string name="base_path">/Game</string>
+    <string name="create_game_path">/</string>
+    <!-- %1s er gameId -->
+    <string name="join_game_path">/%1s/join</string>
+    <string name="poll_game_path">/%1s/poll</string>
+    <string name="update_game_path">/%1s/update</string>
+    <string name="game_service_key">Gg1E6gJAAg</string>
+
+    <string name="new_game">Start new game</string>
+    <string name="join_game">Join game</string>
+    <string name="player_name">Player name</string>
 </resources>

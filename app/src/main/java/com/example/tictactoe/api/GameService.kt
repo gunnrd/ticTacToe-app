@@ -8,6 +8,7 @@ import com.example.tictactoe.App
 import com.example.tictactoe.R
 import com.example.tictactoe.api.data.Game
 import com.example.tictactoe.api.data.GameState
+import com.google.gson.Gson
 import org.json.JSONObject
 
 typealias GameServiceCallback = (state: Game?, errorCode: Int?) -> Unit
@@ -32,25 +33,70 @@ object GameService {
         CREATE_GAME("%1s%2s%3s".format(
             context.getString(R.string.protocol),
             context.getString(R.string.domain),
-            context.getString(R.string.base_path)))
+            context.getString(R.string.base_path))),
+
+        JOIN_GAME("%1s%2s%3s%4s".format(
+            context.getString(R.string.protocol),
+            context.getString(R.string.domain),
+            context.getString(R.string.base_path),
+            context.getString(R.string.join_game_path))),
+
+        UPDATE_GAME("%1s%2s%3s%4s".format(
+            context.getString(R.string.protocol),
+            context.getString(R.string.domain),
+            context.getString(R.string.base_path),
+            context.getString(R.string.update_game_path))),
+
+        POLL_GAME("%1s%2s%3s%4s".format(
+            context.getString(R.string.protocol),
+            context.getString(R.string.domain),
+            context.getString(R.string.base_path),
+            context.getString(R.string.poll_game_path)))
     }
 
-    // POST
-    fun createGame(playerId: String, state: GameState, callback: GameServiceCallback?) {
+    fun createGame(playerId: String, gameState: GameState, callback: GameServiceCallback) {
+        val url = APIEndPoints.CREATE_GAME.url
+
+        val requestData = JSONObject()
+        requestData.put("player", playerId)
+        requestData.put("state", gameState)
+
+        val request = object : JsonObjectRequest(Method.POST, url, requestData,
+            {
+                val game = Gson().fromJson(it.toString(0), Game::class.java)
+
+                println(it.toString(0))
+                val gid = game.gameId
+                println("GameId: $gid")
+                println(game)
+
+                callback(game, null)
+                Log.d("GameService: createGame()", "Game successfully created")
+            }, {
+
+                callback(null, it.networkResponse.statusCode)
+                Log.d("GameService: createGame()", "Error creating new game")
+        }) {
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Content-Type"] = "application/json"
+                headers["Game-Service-Key"] = context.getString(R.string.game_service_key)
+                return headers
+            }
+        }
+
+        requestQueue.add(request)
+    }
+
+    fun joinGame(playerId: String, gameId: String, callback: GameServiceCallback) {
 
     }
 
-
-    fun joinGame(playerId: String, gameId: String, callback: (GameState) -> Unit) {
-
-    }
-
-    fun updateGame(gameId: String, gameState: GameState, callback: (GameState) -> Unit) {
+    fun updateGame(gameId: String, gameState: GameState, callback: GameServiceCallback) {
 
     }
 
-    fun pollGame(gameId: String, callback: (GameState) -> Unit) {
+    fun pollGame(gameId: String, callback: GameServiceCallback) {
 
     }
-
 }
