@@ -50,6 +50,5 @@ class ExampleInstrumentedTest {
                 assertEquals(secondPlayer, game?.players?.get(1))
             }
         }
-
     }
 }

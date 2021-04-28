@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity(), GameDialogListener {
         setContentView(binding.root)
 
         //TODO start game button listener
-        binding.buttonNewGame.setOnClickListener {
+        binding.buttonCreateGame.setOnClickListener {
             createNewGame()
         }
 
@@ -29,13 +29,12 @@ class MainActivity : AppCompatActivity(), GameDialogListener {
         }
     }
 
-    private fun createNewGame(){
+    private fun createNewGame() {
         val dialog = CreateGameDialog()
         dialog.show(supportFragmentManager,"CreateGameDialogFragment")
     }
 
-    private fun joinGame(){
-        //TODO
+    private fun joinGame() {
         val dialog = JoinGameDialog()
         dialog.show(supportFragmentManager,"CreateGameDialogFragment")
     }

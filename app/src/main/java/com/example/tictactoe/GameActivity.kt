@@ -1,9 +1,8 @@
 package com.example.tictactoe
 
 import android.os.Bundle
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.tictactoe.api.GameService
+import com.example.tictactoe.api.data.Game
 import com.example.tictactoe.databinding.ActivityGameBinding
 
 class GameActivity : AppCompatActivity() {
@@ -19,6 +18,8 @@ class GameActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
+        binding.playerOneValue.text = GameManager.player
+
         //TODO set textview clicklisteners
         //clickListeners()
     }
@@ -31,6 +32,7 @@ class GameActivity : AppCompatActivity() {
 
     private fun clickListeners() {
         binding.textView01.setOnClickListener {
+
 
         }
         binding.textView02.setOnClickListener {

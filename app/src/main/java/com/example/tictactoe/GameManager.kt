@@ -4,15 +4,13 @@ import com.example.tictactoe.api.GameService
 import com.example.tictactoe.api.data.Game
 import com.example.tictactoe.api.data.GameState
 
-// Skal holde rede på hvordan spillet foregår
 object GameManager {
 
-    lateinit var player: String
-    lateinit var gameState: GameState
-    lateinit var gameId: String
-
-    lateinit var playerX: String
-    lateinit var playerO: String
+    var gameId: String = ""
+    var player: String = ""
+    //var playerTwo: String = ""
+    var gameState: GameState? = null
+    lateinit var activePlayer: String
 
     private val gameStateStart: GameState = listOf(listOf(0,0,0), listOf(0,0,0), listOf(0,0,0))
 
@@ -22,6 +20,7 @@ object GameManager {
                 //TODO give response to given error code
             } else {
                 // TODO Game is created. What to do?
+
                 gameId = game?.gameId.toString()
                 println(game?.gameId)
                 gameState = gameStateStart
@@ -35,7 +34,8 @@ object GameManager {
             if (error != null) {
                 //TODO give response to given error code
             } else {
-                //TODO
+                //TODO Game is joined
+
                 val players = game?.players.toString()
                 println("Players: $players")
             }
@@ -43,7 +43,7 @@ object GameManager {
     }
 
     fun updateGame() {
-
+        //TODO kjør hvis textViews er klikket på
     }
 
     fun pollGame() {
