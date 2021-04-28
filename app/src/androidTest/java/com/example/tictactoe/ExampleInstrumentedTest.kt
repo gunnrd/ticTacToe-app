@@ -24,16 +24,17 @@ class ExampleInstrumentedTest {
         assertEquals("com.example.tictactoe", appContext.packageName)
     }
 
-    var gameState: Game? = null
+    var state: Game? = null
     var gameId: String = ""
     private val firstPlayer: String = "Gunn"
     private val secondPlayer: String = "Renate"
     private val initState = listOf(listOf(0,0,0), listOf(0,0,0), listOf(0,0,0))
+    private val newGameState = listOf(listOf(1,0,0), listOf(1,0,0), listOf(1,0,0))
 
     @Test
     fun createGame() {
-        GameService.createGame(firstPlayer, initState) { game: Game?, errorCode: Int? ->
-            gameState = game
+        GameService.createGame(firstPlayer, initState) { game: Game?, _: Int? ->
+            state = game
             gameId = game?.gameId.toString()
             assertNotNull(game)
             assertNotNull(game?.gameId)
@@ -44,11 +45,21 @@ class ExampleInstrumentedTest {
     @Test
     fun joinGame() {
 
-        gameState?.let {
-            GameService.joinGame(secondPlayer, gameId) { game: Game?, errorCode: Int? ->
+        state?.let {
+            GameService.joinGame(secondPlayer, gameId) { game: Game?, _: Int? ->
+                assertNotNull(game?.gameId)
+                assertNotNull(game?.state)
                 assertEquals(firstPlayer, game?.players?.get(0))
                 assertEquals(secondPlayer, game?.players?.get(1))
             }
+        }
+    }
+
+    @Test
+    fun updateGame() {
+        GameService.updateGame(gameId, newGameState) { game: Game?, _: Int? ->
+            assertNotNull(game?.state)
+            assertEquals(newGameState, game?.state)
         }
     }
 }

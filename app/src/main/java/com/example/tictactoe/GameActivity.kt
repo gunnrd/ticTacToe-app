@@ -3,6 +3,7 @@ package com.example.tictactoe
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tictactoe.api.data.Game
+import com.example.tictactoe.api.data.GameState
 import com.example.tictactoe.databinding.ActivityGameBinding
 
 class GameActivity : AppCompatActivity() {
@@ -22,6 +23,13 @@ class GameActivity : AppCompatActivity() {
 
         //TODO set textview clicklisteners
         //clickListeners()
+        binding.buttonUpdate.setOnClickListener {
+            GameManager.updateGame()
+        }
+
+        binding.buttonPoll.setOnClickListener {
+            GameManager.pollGame()
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -30,9 +38,16 @@ class GameActivity : AppCompatActivity() {
         return super.onSupportNavigateUp()
     }
 
-    private fun clickListeners() {
-        binding.textView01.setOnClickListener {
+    private fun setValues() {
 
+    }
+
+    private fun clickListeners() {
+        binding.textView00.setOnClickListener {
+            binding.textView00.text = "X"
+
+        }
+        binding.textView01.setOnClickListener {
 
         }
         binding.textView02.setOnClickListener {
@@ -54,9 +69,6 @@ class GameActivity : AppCompatActivity() {
 
         }
         binding.textView08.setOnClickListener {
-
-        }
-        binding.textView09.setOnClickListener {
 
         }
     }

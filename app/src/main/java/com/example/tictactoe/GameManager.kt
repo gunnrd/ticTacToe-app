@@ -8,11 +8,14 @@ object GameManager {
 
     var gameId: String = ""
     var player: String = ""
-    //var playerTwo: String = ""
-    var gameState: GameState? = null
+    var state: GameState? = null
     lateinit var activePlayer: String
 
     private val gameStateStart: GameState = listOf(listOf(0,0,0), listOf(0,0,0), listOf(0,0,0))
+
+    // Temp variables for testing
+    // var player starts the game
+    var testPlayer: String = ""
 
     fun createGame() {
         GameService.createGame(player, gameStateStart) { game: Game?, error: Int? ->
@@ -20,33 +23,43 @@ object GameManager {
                 //TODO give response to given error code
             } else {
                 // TODO Game is created. What to do?
-
                 gameId = game?.gameId.toString()
-                println(game?.gameId)
-                gameState = gameStateStart
-                println("gameState: $gameState")
+                state = gameStateStart
             }
         }
     }
 
+    // TODO change back to player after testing
     fun joinGame() {
-        GameService.joinGame(player, gameId) { game: Game?, error: Int? ->
+        GameService.joinGame(testPlayer, gameId) { game: Game?, error: Int? ->
             if (error != null) {
                 //TODO give response to given error code
             } else {
                 //TODO Game is joined
-
-                val players = game?.players.toString()
-                println("Players: $players")
             }
         }
     }
 
+    private val newGameState = listOf(listOf(1,0,0), listOf(1,0,0), listOf(1,0,0))
+
+    // Run if textViews are clicked
     fun updateGame() {
-        //TODO kjør hvis textViews er klikket på
+        GameService.updateGame(gameId, newGameState) { game: Game?, error: Int? ->
+            if (error != null) {
+                //TODO give response to given error code
+            } else {
+                //TODO Game is updated
+            }
+        }
     }
 
     fun pollGame() {
-        //TODO kjør hvis gamestate har endret seg
+        GameService.pollGame(gameId) { game: Game?, error: Int? ->
+            if (error != null) {
+                //TODO give response to given error code
+            } else {
+                //TODO Game is polled
+            }
+        }
     }
 }
