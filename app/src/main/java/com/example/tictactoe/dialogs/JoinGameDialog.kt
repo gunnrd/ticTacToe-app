@@ -30,7 +30,7 @@ class JoinGameDialog(): DialogFragment() {
                             binding.joinGamePlayerName.text.toString(),
                             binding.joinGameId.text.toString())
 
-                        GameManager.testPlayer = binding.joinGamePlayerName.text.toString()
+                        GameManager.playerTwo = binding.joinGamePlayerName.text.toString()
                         //TODO change back to player
                         //GameManager.player = binding.joinGamePlayerName.text.toString()
                         GameManager.gameId = binding.joinGameId.text.toString()
