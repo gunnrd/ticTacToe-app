@@ -64,7 +64,6 @@ object GameService {
                 {
                     val game = Gson().fromJson(it.toString(0), Game::class.java)
 
-                    println(it.toString(0))
                     println(game)
 
                     callback(game, null)
@@ -118,33 +117,6 @@ object GameService {
     }
 
     fun pollGame(gameId: String, callback: GameServiceCallback) {
-        APIEndPoints.currentGameId = gameId
-        val url = APIEndPoints.pollGame()
-
-        val requestData = JSONObject()
-
-        requestData.get(gameId)
-
-        val request = object : JsonObjectRequest(Method.GET, url, requestData,
-            {
-                val game = Gson().fromJson(it.toString(0), Game::class.java)
-                GameManager.state = game.state
-
-                callback(game, null)
-                 Log.d("GameService: createGame()", "Poll game success")
-            }, {
-
-                callback(null, it.networkResponse.statusCode)
-                Log.d("GameService: createGame()", "Error polling game")
-            }) {
-                override fun getHeaders(): MutableMap<String, String> {
-                    val headers = HashMap<String, String>()
-                    headers["Content-Type"] = "application/json"
-                    headers["Game-Service-Key"] = context.getString(R.string.game_service_key)
-                    return headers
-                }
-            }
-
-        requestQueue.add(request)
+        
     }
 }

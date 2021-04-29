@@ -18,12 +18,10 @@ class MainActivity : AppCompatActivity(), GameDialogListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //TODO start game button listener
         binding.buttonCreateGame.setOnClickListener {
             createNewGame()
         }
 
-        //TODO join game button listener
         binding.buttonJoinGame.setOnClickListener {
             joinGame()
         }

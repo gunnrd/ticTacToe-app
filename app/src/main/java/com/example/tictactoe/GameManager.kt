@@ -9,7 +9,8 @@ object GameManager {
     var gameId: String = ""
     var player: String = ""
     var state: GameState? = null
-    lateinit var activePlayer: String
+    var activePlayer: Boolean = false
+    var countChecked = 0
 
     private val gameStateStart: GameState = listOf(listOf(0,0,0), listOf(0,0,0), listOf(0,0,0))
 
@@ -25,6 +26,7 @@ object GameManager {
                 // TODO Game is created. What to do?
                 gameId = game?.gameId.toString()
                 state = gameStateStart
+                activePlayer = true
             }
         }
     }
@@ -40,15 +42,17 @@ object GameManager {
         }
     }
 
-    private val newGameState = listOf(listOf(1,0,0), listOf(1,0,0), listOf(1,0,0))
-
-    // Run if textViews are clicked
     fun updateGame() {
-        GameService.updateGame(gameId, newGameState) { game: Game?, error: Int? ->
-            if (error != null) {
-                //TODO give response to given error code
-            } else {
-                //TODO Game is updated
+        state?.let {
+            GameService.updateGame(gameId, it) { game: Game?, error: Int? ->
+                if (error != null) {
+                    //TODO give response to given error code
+                } else {
+                    //TODO Game is updated
+
+                    activePlayer = !activePlayer
+                    countChecked ++
+                }
             }
         }
     }
@@ -59,6 +63,8 @@ object GameManager {
                 //TODO give response to given error code
             } else {
                 //TODO Game is polled
+                // If gamestate has changed.
+                // countChecked ++
             }
         }
     }
