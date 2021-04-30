@@ -4,13 +4,13 @@
     <string name="protocol">https://</string>
     <string name="domain">generic-game-service.herokuapp.com</string>
     <string name="base_path">/Game</string>
-    <string name="create_game_path">/</string>
 
     <string name="join_game_path">/%1s/join</string>
     <string name="poll_game_path">/%1s/poll</string>
     <string name="update_game_path">/%1s/update</string>
     <string name="game_service_key">Gg1E6gJAAg</string>
 
+    <string name="start_new_game">Start game</string>
     <string name="create_new_game">Create new game</string>
     <string name="join_game">Join game</string>
     <string name="player_name">Player name</string>

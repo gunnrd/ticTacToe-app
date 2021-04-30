@@ -15,7 +15,7 @@ object GameManager {
     var activePlayer: Boolean = false
     var countChecked = 0
 
-    private val gameStateStart: GameState = listOf(listOf(0,0,0), listOf(0,0,0), listOf(0,0,0))
+    private val gameStateStart: GameState = listOf(listOf("0","0","0"), listOf("0","0","0"), listOf("0","0","0"))
 
     fun createGame() {
         GameService.createGame(player, gameStateStart) { game: Game?, error: Int? ->
@@ -25,6 +25,7 @@ object GameManager {
                 gameId = game?.gameId.toString()
                 state = gameStateStart
                 activePlayer = true
+                println(gameId)
             }
         }
     }
@@ -50,7 +51,7 @@ object GameManager {
                     //TODO give response to given error code
                 } else {
                     activePlayer = !activePlayer
-                    countChecked ++
+                    countChecked += 1
                 }
             }
         }
@@ -63,7 +64,7 @@ object GameManager {
             } else {
                 //TODO Game is polled
                 // If gamestate has changed.
-                // countChecked ++
+                // countChecked += 1
             }
         }
     }

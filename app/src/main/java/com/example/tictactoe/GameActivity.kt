@@ -13,15 +13,6 @@ class GameActivity : AppCompatActivity() {
     private lateinit var binding: GameLayoutBinding
     private lateinit var gameHandler: Handler
 
-    private val win1: GameState = listOf(listOf(1,1,1), listOf(0,0,0), listOf(0,0,0))
-    private val win2: GameState = listOf(listOf(1,1,1), listOf(1,1,1), listOf(0,0,0))
-    private val win3: GameState = listOf(listOf(1,1,1), listOf(0,0,0), listOf(1,1,1))
-    private val win4: GameState = listOf(listOf(1,0,0), listOf(1,0,0), listOf(1,0,0))
-    private val win5: GameState = listOf(listOf(0,1,0), listOf(0,1,0), listOf(0,1,0))
-    private val win6: GameState = listOf(listOf(0,0,1), listOf(0,0,1), listOf(0,0,1))
-    private val win7: GameState = listOf(listOf(1,0,0), listOf(0,1,0), listOf(0,0,1))
-    private val win8: GameState = listOf(listOf(0,0,1), listOf(0,1,0), listOf(1,0,0))
-
     private val poll = object : Runnable {
         override fun run() {
             pollApi()
@@ -40,6 +31,8 @@ class GameActivity : AppCompatActivity() {
 
         gameHandler = Handler(Looper.getMainLooper())
         gameHandler.post { pollApi() }
+
+        binding.gameIdValue.text = GameManager.gameId
 
         binding.playerOneValue.text = GameManager.player
 
@@ -62,7 +55,6 @@ class GameActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
-        finish()
         return super.onSupportNavigateUp()
     }
 
@@ -72,125 +64,103 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkWinState() {
-        when {
-            GameManager.state == win1 ->
-                Toast.makeText(this, "You won!", Toast.LENGTH_SHORT).show()
-            GameManager.state == win2 ->
-                Toast.makeText(this, "You won!", Toast.LENGTH_SHORT).show()
-            GameManager.state == win3 ->
-                Toast.makeText(this, "You won!", Toast.LENGTH_SHORT).show()
-            GameManager.state == win4 ->
-                Toast.makeText(this, "You won!", Toast.LENGTH_SHORT).show()
-            GameManager.state == win5 ->
-                Toast.makeText(this, "You won!", Toast.LENGTH_SHORT).show()
-            GameManager.state == win6 ->
-                Toast.makeText(this, "You won!", Toast.LENGTH_SHORT).show()
-            GameManager.state == win7 ->
-                Toast.makeText(this, "You won!", Toast.LENGTH_SHORT).show()
-            GameManager.state == win8 ->
-                Toast.makeText(this, "You won!", Toast.LENGTH_SHORT).show()
-        }
-    }
-
     private fun clickListeners() {
-        binding.textView00.setOnClickListener {
+        binding.textView1.setOnClickListener {
 
             if (GameManager.activePlayer) {
-                binding.textView00.text = "X"
+                binding.textView1.text = "X"
             } else {
-                binding.textView00.text = "O"
+                binding.textView1.text = "O"
             }
-            GameManager.state = listOf(listOf(1,0,0), listOf(0,0,0), listOf(0,0,0))
-            checkWinState()
+            binding.textView1.isClickable = false
             GameManager.updateGame()
         }
 
-        binding.textView01.setOnClickListener {
+        binding.textView2.setOnClickListener {
 
             if (GameManager.activePlayer) {
-                binding.textView01.text = "X"
+                binding.textView2.text = "X"
             } else {
-                binding.textView01.text = "O"
+                binding.textView2.text = "O"
             }
-            GameManager.state = listOf(listOf(0,1,0), listOf(0,0,0), listOf(0,0,0))
+            binding.textView2.isClickable = false
             GameManager.updateGame()
         }
 
-        binding.textView02.setOnClickListener {
+        binding.textView3.setOnClickListener {
 
             if (GameManager.activePlayer) {
-                binding.textView02.text = "X"
+                binding.textView3.text = "X"
             } else {
-                binding.textView02.text = "O"
+                binding.textView3.text = "O"
             }
-            GameManager.state = listOf(listOf(0,0,1), listOf(0,0,0), listOf(0,0,0))
+            binding.textView3.isClickable = false
             GameManager.updateGame()
         }
 
-        binding.textView03.setOnClickListener {
+        binding.textView4.setOnClickListener {
 
             if (GameManager.activePlayer) {
-                binding.textView03.text = "X"
+                binding.textView4.text = "X"
             } else {
-                binding.textView03.text = "O"
+                binding.textView4.text = "O"
             }
-            GameManager.state = listOf(listOf(0,0,0), listOf(1,0,0), listOf(0,0,0))
+            binding.textView4.isClickable = false
             GameManager.updateGame()
         }
 
-        binding.textView04.setOnClickListener {
+        binding.textView5.setOnClickListener {
 
             if (GameManager.activePlayer) {
-                binding.textView04.text = "X"
+                binding.textView5.text = "X"
             } else {
-                binding.textView04.text = "O"
+                binding.textView5.text = "O"
             }
-            GameManager.state = listOf(listOf(0,0,0), listOf(0,1,0), listOf(0,0,0))
+            binding.textView5.isClickable = false
             GameManager.updateGame()
         }
 
-        binding.textView05.setOnClickListener {
+        binding.textView6.setOnClickListener {
 
             if (GameManager.activePlayer) {
-                binding.textView05.text = "X"
+                binding.textView6.text = "X"
             } else {
-                binding.textView05.text = "O"
+                binding.textView6.text = "O"
             }
-            GameManager.state = listOf(listOf(0,0,0), listOf(0,0,1), listOf(0,0,0))
+            binding.textView6.isClickable = false
             GameManager.updateGame()
         }
 
-        binding.textView06.setOnClickListener {
+        binding.textView7.setOnClickListener {
 
             if (GameManager.activePlayer) {
-                binding.textView06.text = "X"
+                binding.textView7.text = "X"
             } else {
-                binding.textView06.text = "O"
+                binding.textView7.text = "O"
             }
-            GameManager.state = listOf(listOf(0,0,0), listOf(0,0,0), listOf(1,0,0))
+            binding.textView7.isClickable = false
             GameManager.updateGame()
         }
 
-        binding.textView07.setOnClickListener {
+        binding.textView8.setOnClickListener {
 
             if (GameManager.activePlayer) {
-                binding.textView07.text = "X"
+                binding.textView8.text = "X"
             } else {
-                binding.textView07.text = "O"
+                binding.textView8.text = "O"
             }
-            GameManager.state = listOf(listOf(0,0,0), listOf(0,0,0), listOf(0,1,0))
+            binding.textView8.isClickable = false
             GameManager.updateGame()
         }
 
-        binding.textView08.setOnClickListener {
+        binding.textView9.setOnClickListener {
 
             if (GameManager.activePlayer) {
-                binding.textView08.text = "X"
+                binding.textView9.text = "X"
             } else {
-                binding.textView08.text = "O"
+                binding.textView9.text = "O"
             }
-            GameManager.state = listOf(listOf(0,0,0), listOf(0,0,0), listOf(0,0,1))
+            binding.textView9.isClickable = false
             GameManager.updateGame()
         }
     }

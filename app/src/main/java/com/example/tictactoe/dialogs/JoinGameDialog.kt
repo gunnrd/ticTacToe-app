@@ -28,11 +28,10 @@ class JoinGameDialog(): DialogFragment() {
                     if(binding.joinGamePlayerName.text.toString() != ""){
                         listener.onDialogJoinGame(
                             binding.joinGamePlayerName.text.toString(),
-                            binding.joinGameId.text.toString())
+                            binding.joinGameId.text.toString()
+                        )
 
-                        GameManager.playerTwo = binding.joinGamePlayerName.text.toString()
-                        //TODO change back to player
-                        //GameManager.player = binding.joinGamePlayerName.text.toString()
+                        GameManager.player = binding.joinGamePlayerName.text.toString()
                         GameManager.gameId = binding.joinGameId.text.toString()
                         GameManager.joinGame()
                         startActivity(Intent(context, GameActivity::class.java))

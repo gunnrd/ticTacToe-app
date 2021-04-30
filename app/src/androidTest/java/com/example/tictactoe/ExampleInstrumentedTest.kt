@@ -26,19 +26,20 @@ class ExampleInstrumentedTest {
 
     var state: Game? = null
     var gameId: String = ""
-    private val firstPlayer: String = "Gunn"
-    private val secondPlayer: String = "Renate"
-    private val initState = listOf(listOf(0,0,0), listOf(0,0,0), listOf(0,0,0))
-    private val newGameState = listOf(listOf(1,0,0), listOf(1,0,0), listOf(1,0,0))
+    private val playerOne: String = "Gunn"
+    private val playerTwo: String = "Renate"
+    private val initState = listOf(listOf("0","0","0"), listOf("0","0","0"), listOf("0","0","0"))
+    private val newGameState = listOf(listOf("X","0","0"), listOf("X","0","0"), listOf("X","0","0"))
 
     @Test
     fun createGame() {
-        GameService.createGame(firstPlayer, initState) { game: Game?, _: Int? ->
+        GameService.createGame(playerOne, initState) { game: Game?, _: Int? ->
             state = game
             gameId = game?.gameId.toString()
             assertNotNull(game)
             assertNotNull(game?.gameId)
-            assertEquals(firstPlayer, game?.players?.get(0))
+            assertEquals(initState, game?.state)
+            assertEquals(playerOne, game?.players?.get(0))
         }
     }
 
@@ -46,11 +47,11 @@ class ExampleInstrumentedTest {
     fun joinGame() {
 
         state?.let {
-            GameService.joinGame(secondPlayer, gameId) { game: Game?, _: Int? ->
+            GameService.joinGame(playerOne, gameId) { game: Game?, _: Int? ->
                 assertNotNull(game?.gameId)
                 assertNotNull(game?.state)
-                assertEquals(firstPlayer, game?.players?.get(0))
-                assertEquals(secondPlayer, game?.players?.get(1))
+                assertEquals(playerOne, game?.players?.get(0))
+                assertEquals(playerTwo, game?.players?.get(1))
             }
         }
     }
@@ -58,8 +59,20 @@ class ExampleInstrumentedTest {
     @Test
     fun updateGame() {
         GameService.updateGame(gameId, newGameState) { game: Game?, _: Int? ->
+            assertNotNull(game?.gameId)
             assertNotNull(game?.state)
             assertEquals(newGameState, game?.state)
         }
     }
+
+    @Test
+    fun pollGame() {
+        GameService.pollGame(gameId) { game: Game?, _: Int? ->
+            assertNotNull(game?.gameId)
+            assertNotNull(game?.state)
+            assertEquals(playerOne, game?.players?.get(0))
+            assertEquals(playerTwo, game?.players?.get(1))
+        }
+    }
+
 }
