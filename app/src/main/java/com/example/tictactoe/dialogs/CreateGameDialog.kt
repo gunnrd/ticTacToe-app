@@ -27,8 +27,10 @@ class CreateGameDialog(): DialogFragment() {
                 setPositiveButton("Create") { _, _ ->
                     if(binding.playerName.text.toString() != ""){
                         listener.onDialogCreateGame(binding.playerName.text.toString())
+
                         GameManager.player = binding.playerName.text.toString()
                         GameManager.createGame()
+
                         startActivity(Intent(context, GameActivity::class.java))
                     } else {
                         Toast.makeText(it, "Player name is required", Toast.LENGTH_SHORT).show()

@@ -4,7 +4,7 @@ import com.example.tictactoe.api.GameService
 import com.example.tictactoe.api.data.Game
 import com.example.tictactoe.api.data.GameState
 
-// var player starts the game
+// Creator of game starts the game
 
 object GameManager {
 
@@ -13,9 +13,55 @@ object GameManager {
     var playerTwo: String = ""
     var state: GameState? = null
     var activePlayer: Boolean = false
-    var countChecked = 0
+    var countCheckedCells = 0
+    var newState = mutableListOf<String>()
+    var pollState = mutableListOf<String>()
+    var host = false
+    private val gameStateStart: GameState = List(3) { List(3) {"0"} }
 
-    private val gameStateStart: GameState = listOf(listOf("0","0","0"), listOf("0","0","0"), listOf("0","0","0"))
+    fun winConditions(): Boolean {
+        val state = GameManager.state!!
+        when {
+            state[0][0] == state[0][1] && state[0][0] == state[0][2] && state[0][0] != "0" -> {
+                println("win row 1")
+                return true
+            }
+            state[1][0] == state[1][1] && state[1][0] == state[1][2] && state[1][0] != "0" -> {
+                println("win row 2")
+                return true
+            }
+            state[2][0] == state[2][1] && state[2][0] == state[2][2] && state[2][0] != "0" -> {
+                println("win row 3")
+                return true
+            }
+            state[0][0] == state[1][0] && state[0][0] == state[2][0] && state[0][0] != "0" -> {
+                println("win column 1")
+                return true
+            }
+            state[0][1] == state[1][1] && state[0][1] == state[2][1] && state[0][1] != "0" -> {
+                println("win column 2")
+                return true
+            }
+            state[0][2] == state[1][2] && state[0][2] == state[2][2] && state[0][2] != "0" -> {
+                println("win column 3")
+                return true
+            }
+            state[0][0] == state[1][1] && state[0][0] == state[2][2] && state[0][0] != "0" -> {
+                println("win diagonal")
+                return true
+            }
+            state[0][2] == state[1][1] && state[0][2] == state[2][0] && state[0][2] != "0" -> {
+                println("win diagonal")
+                return true
+            }
+            countCheckedCells == 9 -> {
+                return false
+            }
+            else -> {
+                return false
+            }
+        }
+    }
 
     fun createGame() {
         GameService.createGame(player, gameStateStart) { game: Game?, error: Int? ->
@@ -25,21 +71,21 @@ object GameManager {
                 gameId = game?.gameId.toString()
                 state = gameStateStart
                 activePlayer = true
-                println(gameId)
+                host = true
+                newState = state?.flatten() as MutableList<String>
+                println("------------newState----------- $newState ---------------------------")
+                println("------------------------------ $gameId ------------------------------")
             }
         }
     }
 
     fun joinGame() {
-        GameService.joinGame(player, gameId) { game: Game?, error: Int? ->
+        GameService.joinGame(playerTwo, gameId) { game: Game?, error: Int? ->
             if (error != null) {
                 //TODO give response to given error code
             } else {
-                if (game != null) {
-                    if (game.players[1] != "")
-                        playerTwo = game.players[1]
-
-                }
+                activePlayer = false
+                host = false
             }
         }
     }
@@ -50,8 +96,13 @@ object GameManager {
                 if (error != null) {
                     //TODO give response to given error code
                 } else {
+                    // TODO Remove next line after testing and before delivery
                     activePlayer = !activePlayer
-                    countChecked += 1
+                    countCheckedCells += 1
+                    println("countCheckedCells: $countCheckedCells")
+                    newState = state?.flatten() as MutableList<String>
+
+                    if (winConditions()) { println("You win!") }
                 }
             }
         }
@@ -62,9 +113,13 @@ object GameManager {
             if (error != null) {
                 //TODO give response to given error code
             } else {
-                //TODO Game is polled
-                // If gamestate has changed.
-                // countChecked += 1
+                winConditions()
+
+                if ((newState != pollState) && !winConditions()) {
+                    activePlayer = true
+                    countCheckedCells += 1
+                    println("countCheckedCells: $countCheckedCells")
+                }
             }
         }
     }

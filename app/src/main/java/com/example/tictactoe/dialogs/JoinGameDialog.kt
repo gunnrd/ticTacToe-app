@@ -25,18 +25,24 @@ class JoinGameDialog(): DialogFragment() {
             builder.apply {
                 setTitle("Join game")
                 setPositiveButton("Join") { _, _ ->
-                    if(binding.joinGamePlayerName.text.toString() != ""){
-                        listener.onDialogJoinGame(
-                            binding.joinGamePlayerName.text.toString(),
-                            binding.joinGameId.text.toString()
-                        )
 
-                        GameManager.player = binding.joinGamePlayerName.text.toString()
-                        GameManager.gameId = binding.joinGameId.text.toString()
-                        GameManager.joinGame()
-                        startActivity(Intent(context, GameActivity::class.java))
-                    } else {
-                        Toast.makeText(it, "Player name is required", Toast.LENGTH_SHORT).show()
+                    when {
+                        binding.joinGamePlayerName.text.isEmpty() ->
+                            Toast.makeText(it, "Player name is required", Toast.LENGTH_SHORT).show()
+                        binding.joinGameId.text.isEmpty() ->
+                            Toast.makeText(it, "Game id is required", Toast.LENGTH_SHORT).show()
+                        else -> {
+                            listener.onDialogJoinGame(
+                                    binding.joinGamePlayerName.text.toString(),
+                                    binding.joinGameId.text.toString()
+                            )
+
+                            GameManager.playerTwo = binding.joinGamePlayerName.text.toString()
+                            GameManager.gameId = binding.joinGameId.text.toString()
+                            GameManager.joinGame()
+
+                            startActivity(Intent(context, GameActivity::class.java))
+                        }
                     }
                 }
                 setNegativeButton("Cancel") { dialog, _ ->
@@ -44,7 +50,6 @@ class JoinGameDialog(): DialogFragment() {
                 }
                 setView(binding.root)
             }
-
             builder.create()
 
         } ?: throw IllegalStateException("Activity cannot be null")

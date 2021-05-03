@@ -2,7 +2,6 @@ package com.example.tictactoe.api
 
 import android.util.Log
 import com.android.volley.RequestQueue
-import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.tictactoe.App
@@ -11,7 +10,6 @@ import com.example.tictactoe.R
 import com.example.tictactoe.api.data.Game
 import com.example.tictactoe.api.data.GameState
 import com.google.gson.Gson
-import com.google.gson.JsonArray
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -65,6 +63,10 @@ object GameService {
                 {
                     val game = Gson().fromJson(it.toString(0), Game::class.java)
 
+                    println(game)
+                    //GameManager.state = game.state
+                    GameManager.newState = game.state.flatten() as MutableList<String>
+
                     callback(game, null)
                     Log.d(TAG, "Game successfully joined")
                 }, {
@@ -89,6 +91,7 @@ object GameService {
 
         val requestData = JSONObject()
 
+        requestData.put("gameId", gameId)
         requestData.put("state", JSONArray(state))
 
         val request = object : JsonObjectRequest(Method.POST, url, requestData,
@@ -124,10 +127,13 @@ object GameService {
                     val game = Gson().fromJson(it.toString(0), Game::class.java)
 
                     GameManager.state = game.state
-                    println("Polled game state from API: ${game.state}")
+                    GameManager.newState = game.state.flatten() as MutableList<String>
+                    GameManager.pollState = game.state.flatten() as MutableList<String>
+                    println("PollState: ${GameManager.pollState}")
+                    println("Polled game state from Server: ${game.state}")
 
                     callback(game, null)
-                    Log.d(TAG, "Poll game success")
+                    //Log.d(TAG, "Poll game success")
                 }, {
 
             callback(null, it.networkResponse.statusCode)
