@@ -61,7 +61,6 @@ class JoinGameDialog(): DialogFragment() {
             listener = context as GameDialogListener
         } catch (e: ClassCastException){
             throw ClassCastException(("$context must implement GameDialogListener"))
-
         }
     }
 }

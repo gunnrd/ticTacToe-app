@@ -5,6 +5,7 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.tictactoe.App
+import com.example.tictactoe.GameActivity
 import com.example.tictactoe.GameManager
 import com.example.tictactoe.R
 import com.example.tictactoe.api.data.Game
@@ -23,14 +24,15 @@ object GameService {
 
     fun createGame(playerId: String, state: GameState, callback: GameServiceCallback) {
         val url = APIEndPoints.createGameUrl()
-
         val requestData = JSONObject()
+
         requestData.put("player", playerId)
         requestData.put("state", JSONArray(state))
 
         val request = object : JsonObjectRequest(Method.POST, url, requestData,
             {
                 val game = Gson().fromJson(it.toString(0), Game::class.java)
+                GameManager.gameId = game.gameId
 
                 callback(game, null)
                 Log.d(TAG, "Game successfully created")
@@ -52,9 +54,7 @@ object GameService {
 
     fun joinGame(playerId: String, gameId: String, callback: GameServiceCallback) {
         APIEndPoints.currentGameId = gameId
-        println(APIEndPoints.currentGameId)
         val url = APIEndPoints.joinGameUrl()
-
         val requestData = JSONObject()
 
         requestData.put("player", playerId)
@@ -62,9 +62,8 @@ object GameService {
         val request = object : JsonObjectRequest(Method.POST, url, requestData,
                 {
                     val game = Gson().fromJson(it.toString(0), Game::class.java)
-
+                    //TODO Remove print on line below
                     println(game)
-                    //GameManager.state = game.state
                     GameManager.newState = game.state.flatten() as MutableList<String>
 
                     callback(game, null)
@@ -88,7 +87,6 @@ object GameService {
     fun updateGame(gameId: String, state: GameState, callback: GameServiceCallback) {
         APIEndPoints.currentGameId = gameId
         val url = APIEndPoints.updateGame()
-
         val requestData = JSONObject()
 
         requestData.put("gameId", gameId)
@@ -103,7 +101,7 @@ object GameService {
             }, {
 
                 callback(null, it.networkResponse.statusCode)
-                Log.d(TAG, "Error updating new game")
+                Log.d(TAG, "Error updating game")
             }) {
                 override fun getHeaders(): MutableMap<String, String> {
                     val headers = HashMap<String, String>()
@@ -119,7 +117,6 @@ object GameService {
     fun pollGame(gameId: String, callback: GameServiceCallback) {
         APIEndPoints.currentGameId = gameId
         val url = APIEndPoints.pollGame()
-
         val requestData = JSONObject()
 
         val request = object : JsonObjectRequest(Method.GET, url, requestData,
@@ -129,11 +126,12 @@ object GameService {
                     GameManager.state = game.state
                     GameManager.newState = game.state.flatten() as MutableList<String>
                     GameManager.pollState = game.state.flatten() as MutableList<String>
+                    //TODO Remove prints
                     println("PollState: ${GameManager.pollState}")
                     println("Polled game state from Server: ${game.state}")
 
                     callback(game, null)
-                    //Log.d(TAG, "Poll game success")
+                    Log.d(TAG, "Poll game success")
                 }, {
 
             callback(null, it.networkResponse.statusCode)

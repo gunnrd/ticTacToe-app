@@ -74,5 +74,4 @@ class ExampleInstrumentedTest {
             assertEquals(playerTwo, game?.players?.get(1))
         }
     }
-
 }

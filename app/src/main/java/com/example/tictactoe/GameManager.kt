@@ -13,10 +13,10 @@ object GameManager {
     var playerTwo: String = ""
     var state: GameState? = null
     var activePlayer: Boolean = false
+    var host = false
     var countCheckedCells = 0
     var newState = mutableListOf<String>()
     var pollState = mutableListOf<String>()
-    var host = false
     private val gameStateStart: GameState = List(3) { List(3) {"0"} }
 
     fun winConditions(): Boolean {
@@ -73,7 +73,6 @@ object GameManager {
                 activePlayer = true
                 host = true
                 newState = state?.flatten() as MutableList<String>
-                println("------------newState----------- $newState ---------------------------")
                 println("------------------------------ $gameId ------------------------------")
             }
         }
@@ -96,13 +95,9 @@ object GameManager {
                 if (error != null) {
                     //TODO give response to given error code
                 } else {
-                    // TODO Remove next line after testing and before delivery
                     activePlayer = !activePlayer
                     countCheckedCells += 1
-                    println("countCheckedCells: $countCheckedCells")
                     newState = state?.flatten() as MutableList<String>
-
-                    if (winConditions()) { println("You win!") }
                 }
             }
         }
@@ -118,7 +113,26 @@ object GameManager {
                 if ((newState != pollState) && !winConditions()) {
                     activePlayer = true
                     countCheckedCells += 1
-                    println("countCheckedCells: $countCheckedCells")
+                }
+            }
+        }
+    }
+
+    fun startNewGame() {
+        state = gameStateStart
+
+        state?.let {
+            GameService.updateGame(gameId, it) { game: Game?, error: Int? ->
+                if (error != null) {
+                    //TODO give response to given error code
+                } else {
+                    activePlayer = if (host) {
+                        true
+                    } else {
+                        !activePlayer
+                    }
+                    countCheckedCells = 0
+                    newState = state?.flatten() as MutableList<String>
                 }
             }
         }
