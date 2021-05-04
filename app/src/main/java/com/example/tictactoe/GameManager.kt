@@ -17,7 +17,7 @@ object GameManager {
     var countCheckedCells = 0
     var newState = mutableListOf<String>()
     var pollState = mutableListOf<String>()
-    private val gameStateStart: GameState = List(3) { List(3) {"0"} }
+    val gameStateStart: GameState = List(3) { List(3) {"0"} }
 
     fun winConditions(): Boolean {
         val state = GameManager.state!!

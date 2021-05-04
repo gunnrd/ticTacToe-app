@@ -9,6 +9,7 @@ import com.example.tictactoe.GameManager.activePlayer
 import com.example.tictactoe.GameManager.newState
 import com.example.tictactoe.GameManager.pollState
 import com.example.tictactoe.GameManager.state
+import com.example.tictactoe.GameManager.gameStateStart
 import com.example.tictactoe.api.GameService.context
 import com.example.tictactoe.databinding.ActivityGameBinding
 
@@ -37,7 +38,8 @@ class GameActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayShowTitleEnabled(true)
+        supportActionBar?.title = "Main menu"
 
         //recyclerView = findViewById(R.id.gameRecyclerView)
         //recyclerView.adapter = GameAdapter(state!!)
@@ -102,19 +104,37 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
+    private fun deactivateClickable() {
+        binding.textView1.isClickable = false
+        binding.textView2.isClickable = false
+        binding.textView3.isClickable = false
+        binding.textView4.isClickable = false
+        binding.textView5.isClickable = false
+        binding.textView6.isClickable = false
+        binding.textView7.isClickable = false
+        binding.textView8.isClickable = false
+        binding.textView9.isClickable = false
+    }
+
     private fun checkWinner() {
         when {
             GameManager.countCheckedCells == 9 && !GameManager.winConditions() -> {
                 binding.textViewWinner.text = context.getString(R.string.draw)
                 binding.buttonStartNewGame.isVisible = true
+                state = gameStateStart
+                deactivateClickable()
             }
             GameManager.winConditions() && activePlayer -> {
                 binding.textViewWinner.text = context.getString(R.string.player_one_wins)
                 binding.buttonStartNewGame.isVisible = true
+                state = gameStateStart
+                deactivateClickable()
             }
             GameManager.winConditions() && !activePlayer -> {
                 binding.textViewWinner.text = context.getString(R.string.player_two_wins)
                 binding.buttonStartNewGame.isVisible = true
+                state = gameStateStart
+                deactivateClickable()
             }
         }
     }
