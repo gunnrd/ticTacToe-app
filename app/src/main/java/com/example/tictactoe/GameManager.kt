@@ -1,5 +1,7 @@
 package com.example.tictactoe
 
+import android.content.Intent
+import com.example.tictactoe.App.Companion.context
 import com.example.tictactoe.api.GameService
 import com.example.tictactoe.api.data.Game
 import com.example.tictactoe.api.data.GameState
@@ -17,7 +19,7 @@ object GameManager {
     var countCheckedCells = 0
     var newState = mutableListOf<String>()
     var pollState = mutableListOf<String>()
-    val gameStateStart: GameState = List(3) { List(3) {"0"} }
+    private val gameStateStart: GameState = List(3) { List(3) {"0"} }
 
     fun winConditions(): Boolean {
         val state = GameManager.state!!
@@ -74,6 +76,10 @@ object GameManager {
                 host = true
                 newState = state?.flatten() as MutableList<String>
                 println("------------------------------ $gameId ------------------------------")
+
+                Intent(context, GameActivity::class.java).apply {
+                    putExtra("GAMEID", game?.gameId)
+                }
             }
         }
     }
@@ -83,8 +89,14 @@ object GameManager {
             if (error != null) {
                 //TODO give response to given error code
             } else {
-                activePlayer = false
-                host = false
+                if (game?.state != gameStateStart) {
+                    activePlayer = true
+                    host = true
+                }
+
+                Intent(context, GameActivity::class.java).apply {
+                    putExtra("GAMEID", game?.gameId)
+                }
             }
         }
     }

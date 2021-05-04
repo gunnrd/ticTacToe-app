@@ -34,6 +34,9 @@ object GameService {
                 val game = Gson().fromJson(it.toString(0), Game::class.java)
                 GameManager.gameId = game.gameId
 
+                //TODO Remove print on line below
+                println(game)
+
                 callback(game, null)
                 Log.d(TAG, "Game successfully created")
             }, {
@@ -62,8 +65,10 @@ object GameService {
         val request = object : JsonObjectRequest(Method.POST, url, requestData,
                 {
                     val game = Gson().fromJson(it.toString(0), Game::class.java)
+
                     //TODO Remove print on line below
                     println(game)
+
                     GameManager.newState = game.state.flatten() as MutableList<String>
 
                     callback(game, null)
@@ -126,12 +131,14 @@ object GameService {
                     GameManager.state = game.state
                     GameManager.newState = game.state.flatten() as MutableList<String>
                     GameManager.pollState = game.state.flatten() as MutableList<String>
-                    //TODO Remove prints
-                    println("PollState: ${GameManager.pollState}")
+
+                    //TODO Remove print
+                    println(GameManager.pollState)
                     println("Polled game state from Server: ${game.state}")
 
                     callback(game, null)
-                    Log.d(TAG, "Poll game success")
+                    //TODO activate Log
+                    //Log.d(TAG, "Poll game success")
                 }, {
 
             callback(null, it.networkResponse.statusCode)
