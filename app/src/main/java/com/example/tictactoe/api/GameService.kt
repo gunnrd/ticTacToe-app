@@ -132,8 +132,6 @@ object GameService {
                     GameManager.newState = game.state.flatten() as MutableList<String>
                     GameManager.pollState = game.state.flatten() as MutableList<String>
 
-                    //TODO Remove print
-                    println(GameManager.pollState)
                     println("Polled game state from Server: ${game.state}")
 
                     callback(game, null)
