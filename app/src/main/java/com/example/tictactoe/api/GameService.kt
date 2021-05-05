@@ -5,7 +5,6 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.tictactoe.App
-import com.example.tictactoe.GameActivity
 import com.example.tictactoe.GameManager
 import com.example.tictactoe.R
 import com.example.tictactoe.api.data.Game
@@ -69,6 +68,7 @@ object GameService {
                     //TODO Remove print on line below
                     println(game)
 
+                    GameManager.playerTwo = game.players[1]
                     GameManager.newState = game.state.flatten() as MutableList<String>
 
                     callback(game, null)

@@ -1,6 +1,8 @@
 package com.example.tictactoe
 
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.os.Bundle
 import com.example.tictactoe.App.Companion.context
 import com.example.tictactoe.api.GameService
 import com.example.tictactoe.api.data.Game
@@ -19,46 +21,29 @@ object GameManager {
     var countCheckedCells = 0
     var newState = mutableListOf<String>()
     var pollState = mutableListOf<String>()
-    private val gameStateStart: GameState = List(3) { List(3) {"0"} }
+    val gameStateStart: GameState = List(3) { List(3) {"0"} }
 
     fun winConditions(): Boolean {
-        val state = GameManager.state!!
+        val state = state!!
         when {
-            state[0][0] == state[0][1] && state[0][0] == state[0][2] && state[0][0] != "0" -> {
-                println("win row 1")
+            state[0][0] == state[0][1] && state[0][0] == state[0][2] && state[0][0] != "0" ->
                 return true
-            }
-            state[1][0] == state[1][1] && state[1][0] == state[1][2] && state[1][0] != "0" -> {
-                println("win row 2")
+            state[1][0] == state[1][1] && state[1][0] == state[1][2] && state[1][0] != "0" ->
                 return true
-            }
-            state[2][0] == state[2][1] && state[2][0] == state[2][2] && state[2][0] != "0" -> {
-                println("win row 3")
+            state[2][0] == state[2][1] && state[2][0] == state[2][2] && state[2][0] != "0" ->
                 return true
-            }
-            state[0][0] == state[1][0] && state[0][0] == state[2][0] && state[0][0] != "0" -> {
-                println("win column 1")
+            state[0][0] == state[1][0] && state[0][0] == state[2][0] && state[0][0] != "0" ->
                 return true
-            }
-            state[0][1] == state[1][1] && state[0][1] == state[2][1] && state[0][1] != "0" -> {
-                println("win column 2")
+            state[0][1] == state[1][1] && state[0][1] == state[2][1] && state[0][1] != "0" ->
                 return true
-            }
-            state[0][2] == state[1][2] && state[0][2] == state[2][2] && state[0][2] != "0" -> {
-                println("win column 3")
+            state[0][2] == state[1][2] && state[0][2] == state[2][2] && state[0][2] != "0" ->
                 return true
-            }
-            state[0][0] == state[1][1] && state[0][0] == state[2][2] && state[0][0] != "0" -> {
-                println("win diagonal")
+            state[0][0] == state[1][1] && state[0][0] == state[2][2] && state[0][0] != "0" ->
                 return true
-            }
-            state[0][2] == state[1][1] && state[0][2] == state[2][0] && state[0][2] != "0" -> {
-                println("win diagonal")
+            state[0][2] == state[1][1] && state[0][2] == state[2][0] && state[0][2] != "0" ->
                 return true
-            }
-            countCheckedCells == 9 -> {
-                return false
-            }
+            countCheckedCells == 9 -> return false
+
             else -> {
                 return false
             }
@@ -77,9 +62,13 @@ object GameManager {
                 newState = state?.flatten() as MutableList<String>
                 println("------------------------------ $gameId ------------------------------")
 
-                Intent(context, GameActivity::class.java).apply {
-                    putExtra("GAMEID", game?.gameId)
+                val bundle = Bundle()
+                val intent = Intent(context, GameActivity::class.java).apply {
+                    bundle.putParcelable("RESPONSE", game)
+                    putExtras(bundle)
                 }
+                intent.flags = FLAG_ACTIVITY_NEW_TASK
+                context.startActivity(intent)
             }
         }
     }
@@ -92,11 +81,19 @@ object GameManager {
                 if (game?.state != gameStateStart) {
                     activePlayer = true
                     host = true
+                } else {
+                    activePlayer = false
+                    host = false
                 }
 
-                Intent(context, GameActivity::class.java).apply {
-                    putExtra("GAMEID", game?.gameId)
+                val bundle = Bundle()
+                val intent = Intent(context, GameActivity::class.java).apply {
+                    bundle.putParcelable("RESPONSE", game)
+                    putExtras(bundle)
                 }
+                intent.flags = FLAG_ACTIVITY_NEW_TASK
+                context.startActivity(intent)
+
             }
         }
     }

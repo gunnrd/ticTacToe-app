@@ -11,15 +11,13 @@ import com.example.tictactoe.GameManager.pollState
 import com.example.tictactoe.GameManager.state
 import com.example.tictactoe.GameManager.host
 import com.example.tictactoe.api.GameService.context
+import com.example.tictactoe.api.data.Game
 import com.example.tictactoe.databinding.ActivityGameBinding
 
 class GameActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityGameBinding
-    //private lateinit var binding: GameLayoutBinding
     private lateinit var gameHandler: Handler
-    //private lateinit var recyclerView: RecyclerView
-    //private var state: GameState? = null
     private var cellNumber = 0
 
     private val poll = object : Runnable {
@@ -40,22 +38,22 @@ class GameActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(true)
         supportActionBar?.title = "Main menu"
 
-        //recyclerView = findViewById(R.id.gameRecyclerView)
-        //recyclerView.adapter = GameAdapter(state!!)
-        //recyclerView.layoutManager = LinearLayoutManager(this)
+        val response = intent.getParcelableExtra<Game>("RESPONSE")
 
-        val currentGameId = intent.getStringExtra("GAMEID")
-        binding.gameIdValue.text = currentGameId.toString()
+        if (response != null) {
+            binding.gameIdValue.text = response.gameId
+            binding.playerOneValue.text = response.players[0]
+
+            /*
+            if (response.players[1] != "") {
+                binding.playerTwoValue.text = response.players[1]
+            }*/
+        }
 
         gameHandler = Handler(Looper.getMainLooper())
         gameHandler.post { poll() }
 
         binding.buttonStartNewGame.isVisible = false
-        binding.playerOneValue.text = GameManager.player
-
-        if (GameManager.playerTwo != "") {
-            binding.playerTwoValue.text = GameManager.playerTwo
-        }
 
         clickListeners()
         startNewGame()
@@ -77,8 +75,11 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun poll() {
-        if (GameManager.gameId != "") {
+        if (GameManager.gameId != "" && !GameManager.winConditions() && state != null) {
             GameManager.pollGame()
+            if (GameManager.playerTwo != "") {
+                binding.playerTwoValue.text = GameManager.playerTwo
+            }
 
             if (pollState.isNotEmpty()) {
                 getChangedCell()
@@ -127,19 +128,22 @@ class GameActivity : AppCompatActivity() {
             GameManager.countCheckedCells == 9 && !GameManager.winConditions() -> {
                 binding.textViewWinner.text = context.getString(R.string.draw)
                 binding.buttonStartNewGame.isVisible = true
-                //state = gameStateStart
+                newState = GameManager.gameStateStart.flatten() as MutableList<String>
+                pollState = GameManager.gameStateStart.flatten() as MutableList<String>
                 deactivateClickable()
             }
             GameManager.winConditions() && activePlayer -> {
                 binding.textViewWinner.text = context.getString(R.string.player_one_wins)
                 binding.buttonStartNewGame.isVisible = true
-                //state = gameStateStart
+                newState = GameManager.gameStateStart.flatten() as MutableList<String>
+                pollState = GameManager.gameStateStart.flatten() as MutableList<String>
                 deactivateClickable()
             }
             GameManager.winConditions() && !activePlayer -> {
                 binding.textViewWinner.text = context.getString(R.string.player_two_wins)
                 binding.buttonStartNewGame.isVisible = true
-                //state = gameStateStart
+                newState = GameManager.gameStateStart.flatten() as MutableList<String>
+                pollState = GameManager.gameStateStart.flatten() as MutableList<String>
                 deactivateClickable()
             }
         }

@@ -33,15 +33,14 @@ class JoinGameDialog(): DialogFragment() {
                             Toast.makeText(it, "Game id is required", Toast.LENGTH_SHORT).show()
                         else -> {
                             listener.onDialogJoinGame(
-                                    binding.joinGamePlayerName.text.toString(),
-                                    binding.joinGameId.text.toString()
+                                binding.joinGamePlayerName.text.toString(),
+                                binding.joinGameId.text.toString()
                             )
 
                             GameManager.playerTwo = binding.joinGamePlayerName.text.toString()
                             GameManager.gameId = binding.joinGameId.text.toString()
                             GameManager.joinGame()
 
-                            startActivity(Intent(context, GameActivity::class.java))
                         }
                     }
                 }
