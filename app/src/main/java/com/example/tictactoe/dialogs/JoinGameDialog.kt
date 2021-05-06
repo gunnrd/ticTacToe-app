@@ -40,7 +40,6 @@ class JoinGameDialog(): DialogFragment() {
                             GameManager.playerTwo = binding.joinGamePlayerName.text.toString()
                             GameManager.gameId = binding.joinGameId.text.toString()
                             GameManager.joinGame()
-
                         }
                     }
                 }

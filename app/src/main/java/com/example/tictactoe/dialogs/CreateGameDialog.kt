@@ -3,11 +3,9 @@ package com.example.tictactoe.dialogs
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import com.example.tictactoe.GameActivity
 import com.example.tictactoe.GameManager
 import com.example.tictactoe.databinding.DialogCreateGameBinding
 import java.lang.ClassCastException

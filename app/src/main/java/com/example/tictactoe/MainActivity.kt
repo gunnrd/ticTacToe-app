@@ -3,7 +3,6 @@ package com.example.tictactoe
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.TextView
 import com.example.tictactoe.databinding.ActivityMainBinding
 import com.example.tictactoe.dialogs.CreateGameDialog
 import com.example.tictactoe.dialogs.GameDialogListener
@@ -35,7 +34,7 @@ class MainActivity : AppCompatActivity(), GameDialogListener {
 
     private fun joinGame() {
         val dialog = JoinGameDialog()
-        dialog.show(supportFragmentManager,"CreateGameDialogFragment")
+        dialog.show(supportFragmentManager,"JoinGameDialogFragment")
     }
 
     override fun onDialogCreateGame(player: String) {

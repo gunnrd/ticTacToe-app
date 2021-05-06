@@ -50,6 +50,16 @@ object GameManager {
         }
     }
 
+    fun startActivity(game: Game) {
+        val bundle = Bundle()
+        val intent = Intent(context, GameActivity::class.java).apply {
+            bundle.putParcelable("RESPONSE", game)
+            putExtras(bundle)
+        }
+        intent.flags = FLAG_ACTIVITY_NEW_TASK
+        context.startActivity(intent)
+    }
+
     fun createGame() {
         GameService.createGame(player, gameStateStart) { game: Game?, error: Int? ->
             if (error != null) {
@@ -60,15 +70,10 @@ object GameManager {
                 activePlayer = true
                 host = true
                 newState = state?.flatten() as MutableList<String>
-                println("------------------------------ $gameId ------------------------------")
 
-                val bundle = Bundle()
-                val intent = Intent(context, GameActivity::class.java).apply {
-                    bundle.putParcelable("RESPONSE", game)
-                    putExtras(bundle)
+                if (game != null) {
+                    startActivity(game)
                 }
-                intent.flags = FLAG_ACTIVITY_NEW_TASK
-                context.startActivity(intent)
             }
         }
     }
@@ -78,29 +83,16 @@ object GameManager {
             if (error != null) {
                 //TODO give response to given error code
             } else {
-                if (game?.state != gameStateStart) {
-                    activePlayer = true
-                    host = true
-                } else {
-                    activePlayer = false
-                    host = false
+                if (game != null) {
+                    startActivity(game)
                 }
-
-                val bundle = Bundle()
-                val intent = Intent(context, GameActivity::class.java).apply {
-                    bundle.putParcelable("RESPONSE", game)
-                    putExtras(bundle)
-                }
-                intent.flags = FLAG_ACTIVITY_NEW_TASK
-                context.startActivity(intent)
-
             }
         }
     }
 
     fun updateGame() {
         state?.let {
-            GameService.updateGame(gameId, it) { game: Game?, error: Int? ->
+            GameService.updateGame(gameId, it) { _: Game?, error: Int? ->
                 if (error != null) {
                     //TODO give response to given error code
                 } else {
@@ -113,7 +105,7 @@ object GameManager {
     }
 
     fun pollGame() {
-        GameService.pollGame(gameId) { game: Game?, error: Int? ->
+        GameService.pollGame(gameId) { _: Game?, error: Int? ->
             if (error != null) {
                 //TODO give response to given error code
             } else {
@@ -131,7 +123,7 @@ object GameManager {
         state = gameStateStart
 
         state?.let {
-            GameService.updateGame(gameId, it) { game: Game?, error: Int? ->
+            GameService.updateGame(gameId, it) { _: Game?, error: Int? ->
                 if (error != null) {
                     //TODO give response to given error code
                 } else {

@@ -1,8 +1,11 @@
 package com.example.tictactoe
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.tictactoe.GameManager.activePlayer
@@ -14,7 +17,7 @@ import com.example.tictactoe.api.GameService.context
 import com.example.tictactoe.api.data.Game
 import com.example.tictactoe.databinding.ActivityGameBinding
 
-class GameActivity : AppCompatActivity() {
+class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityGameBinding
     private lateinit var gameHandler: Handler
@@ -39,15 +42,9 @@ class GameActivity : AppCompatActivity() {
         supportActionBar?.title = "Main menu"
 
         val response = intent.getParcelableExtra<Game>("RESPONSE")
-
         if (response != null) {
             binding.gameIdValue.text = response.gameId
             binding.playerOneValue.text = response.players[0]
-
-            /*
-            if (response.players[1] != "") {
-                binding.playerTwoValue.text = response.players[1]
-            }*/
         }
 
         gameHandler = Handler(Looper.getMainLooper())
@@ -55,7 +52,16 @@ class GameActivity : AppCompatActivity() {
 
         binding.buttonStartNewGame.isVisible = false
 
-        clickListeners()
+        binding.textView0.setOnClickListener(this)
+        binding.textView1.setOnClickListener(this)
+        binding.textView2.setOnClickListener(this)
+        binding.textView3.setOnClickListener(this)
+        binding.textView4.setOnClickListener(this)
+        binding.textView5.setOnClickListener(this)
+        binding.textView6.setOnClickListener(this)
+        binding.textView7.setOnClickListener(this)
+        binding.textView8.setOnClickListener(this)
+
         startNewGame()
     }
 
@@ -74,8 +80,41 @@ class GameActivity : AppCompatActivity() {
         return super.onSupportNavigateUp()
     }
 
+    override fun onClick(view: View) {
+        var cellIndex = 10
+        val textView = view as TextView
+
+        when (textView.id) {
+            R.id.textView0 -> cellIndex = 0
+            R.id.textView1 -> cellIndex = 1
+            R.id.textView2 -> cellIndex = 2
+            R.id.textView3 -> cellIndex = 3
+            R.id.textView4 -> cellIndex = 4
+            R.id.textView5 -> cellIndex = 5
+            R.id.textView6 -> cellIndex = 6
+            R.id.textView7 -> cellIndex = 7
+            R.id.textView8 -> cellIndex = 8
+        }
+
+        playGame(cellIndex, textView)
+    }
+
+    private fun playGame(i: Int, textView: TextView) {
+        if (host && activePlayer) {
+            textView.text = "X"
+            newState[i] = "X"
+        } else {
+            textView.text = "O"
+            newState[i] = "O"
+        }
+        textView.isClickable = false
+        state = newState.chunked(3)
+        checkWinner()
+        GameManager.updateGame()
+    }
+
     private fun poll() {
-        if (GameManager.gameId != "" && !GameManager.winConditions() && state != null) {
+        if (GameManager.gameId != "") {
             GameManager.pollGame()
             if (GameManager.playerTwo != "") {
                 binding.playerTwoValue.text = GameManager.playerTwo
@@ -90,11 +129,13 @@ class GameActivity : AppCompatActivity() {
 
     private fun startNewGame() {
         binding.buttonStartNewGame.setOnClickListener {
+            /*
             if (host) {
                 GameManager.startNewGame()
             } else {
                 GameManager.joinGame()
-            }
+            }*/
+            GameManager.startNewGame()
 
             binding.buttonStartNewGame.isVisible = false
             binding.textViewWinner.text = ""
@@ -107,7 +148,7 @@ class GameActivity : AppCompatActivity() {
             binding.textView6.text = ""
             binding.textView7.text = ""
             binding.textView8.text = ""
-            clickListeners()
+            //clickListeners()
         }
     }
 
@@ -151,169 +192,43 @@ class GameActivity : AppCompatActivity() {
 
     private fun getChangedCell() {
         when {
-            pollState[0] != "0" -> binding.textView0.text = pollState[0]
-            pollState[1] != "0" -> binding.textView1.text = pollState[1]
-            pollState[2] != "0" -> binding.textView2.text = pollState[2]
-            pollState[3] != "0" -> binding.textView3.text = pollState[3]
-            pollState[4] != "0" -> binding.textView4.text = pollState[4]
-            pollState[5] != "0" -> binding.textView5.text = pollState[5]
-            pollState[6] != "0" -> binding.textView6.text = pollState[6]
-            pollState[7] != "0" -> binding.textView7.text = pollState[7]
-            pollState[8] != "0" -> binding.textView8.text = pollState[8]
+            pollState[0] != "0" -> {
+                binding.textView0.text = pollState[0]
+                binding.textView0.isClickable = false
+            }
+            pollState[1] != "0" -> {
+                binding.textView1.text = pollState[1]
+                binding.textView1.isClickable = false
+            }
+            pollState[2] != "0" -> {
+                binding.textView2.text = pollState[2]
+                binding.textView2.isClickable = false
+            }
+            pollState[3] != "0" -> {
+                binding.textView3.text = pollState[3]
+                binding.textView3.isClickable = false
+            }
+            pollState[4] != "0" -> {
+                binding.textView4.text = pollState[4]
+                binding.textView4.isClickable = false
+            }
+            pollState[5] != "0" -> {
+                binding.textView5.text = pollState[5]
+                binding.textView5.isClickable = false
+            }
+            pollState[6] != "0" -> {
+                binding.textView6.text = pollState[6]
+                binding.textView6.isClickable = false
+            }
+            pollState[7] != "0" -> {
+                binding.textView7.text = pollState[7]
+                binding.textView7.isClickable = false
+            }
+            pollState[8] != "0" -> {
+                binding.textView8.text = pollState[8]
+                binding.textView8.isClickable = false
+            }
         }
     }
 
-    private fun clickListeners() {
-        binding.textView0.setOnClickListener {
-            cellNumber = 1
-            if (host && newState[0] == "0") {
-                binding.textView0.text = "X"
-                newState[0] = "X"
-
-            } else {
-                binding.textView0.text = "O"
-                newState[0] = "O"
-
-            }
-            state = newState.chunked(3)
-            binding.textView0.isClickable = false
-            checkWinner()
-            GameManager.updateGame()
-        }
-
-        binding.textView1.setOnClickListener {
-            cellNumber = 2
-            if (host && newState[1] == "0") {
-                binding.textView1.text = "X"
-                newState[1] = "X"
-
-            } else {
-                binding.textView1.text = "O"
-                newState[1] = "O"
-
-            }
-            state = newState.chunked(3)
-            binding.textView1.isClickable = false
-            checkWinner()
-            GameManager.updateGame()
-        }
-
-        binding.textView2.setOnClickListener {
-            cellNumber = 3
-            if (host && newState[2] == "0") {
-                binding.textView2.text = "X"
-                newState[2] = "X"
-
-            } else {
-                binding.textView2.text = "O"
-                newState[2] = "O"
-            }
-            state = newState.chunked(3)
-            binding.textView2.isClickable = false
-            checkWinner()
-            GameManager.updateGame()
-        }
-
-        binding.textView3.setOnClickListener {
-            cellNumber = 4
-            if (host && newState[3] == "0") {
-                binding.textView3.text = "X"
-                newState[3] = "X"
-
-            } else {
-                binding.textView3.text = "O"
-                newState[3] = "O"
-
-            }
-            state = newState.chunked(3)
-            checkWinner()
-            binding.textView3.isClickable = false
-            GameManager.updateGame()
-        }
-
-        binding.textView4.setOnClickListener {
-            cellNumber = 5
-            if (host && newState[4] == "0") {
-                binding.textView4.text = "X"
-                newState[4] = "X"
-
-            } else {
-                binding.textView4.text = "O"
-                newState[4] = "O"
-
-            }
-            state = newState.chunked(3)
-            checkWinner()
-            binding.textView4.isClickable = false
-            GameManager.updateGame()
-        }
-
-        binding.textView5.setOnClickListener {
-            cellNumber = 6
-            if (host && newState[5] == "0") {
-                binding.textView5.text = "X"
-                newState[5] = "X"
-
-            } else {
-                binding.textView5.text = "O"
-                newState[5] = "O"
-
-            }
-            state = newState.chunked(3)
-            binding.textView5.isClickable = false
-            checkWinner()
-            GameManager.updateGame()
-        }
-
-        binding.textView6.setOnClickListener {
-            cellNumber = 7
-            if (host && newState[6] == "0") {
-                binding.textView6.text = "X"
-                newState[6] = "X"
-
-            } else {
-                binding.textView6.text = "O"
-                newState[6] = "O"
-
-            }
-            state = newState.chunked(3)
-            binding.textView6.isClickable = false
-            checkWinner()
-            GameManager.updateGame()
-        }
-
-        binding.textView7.setOnClickListener {
-            cellNumber = 8
-            if (host && newState[7] == "0") {
-                binding.textView7.text = "X"
-                newState[7] = "X"
-
-            } else {
-                binding.textView7.text = "O"
-                newState[7] = "O"
-
-            }
-            state = newState.chunked(3)
-            binding.textView7.isClickable = false
-            checkWinner()
-            GameManager.updateGame()
-        }
-
-        binding.textView8.setOnClickListener {
-            cellNumber = 9
-            if (host && newState[8] == "0") {
-                binding.textView8.text = "X"
-                newState[8] = "X"
-
-            } else {
-                binding.textView8.text = "O"
-                newState[8] = "O"
-
-            }
-            state = newState.chunked(3)
-            binding.textView8.isClickable = false
-            checkWinner()
-            GameManager.updateGame()
-        }
-    }
 }
