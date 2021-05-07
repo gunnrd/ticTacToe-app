@@ -50,7 +50,7 @@ object GameManager {
         }
     }
 
-    fun startActivity(game: Game) {
+    private fun startActivity(game: Game) {
         val bundle = Bundle()
         val intent = Intent(context, GameActivity::class.java).apply {
             bundle.putParcelable("RESPONSE", game)

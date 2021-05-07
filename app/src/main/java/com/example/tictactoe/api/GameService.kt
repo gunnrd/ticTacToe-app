@@ -133,17 +133,16 @@ object GameService {
                 val game = Gson().fromJson(it.toString(0), Game::class.java)
 
                 GameManager.state = game.state
-                GameManager.newState = game.state.flatten() as MutableList<String>
                 GameManager.pollState = game.state.flatten() as MutableList<String>
 
                 println("Polled game state from server: ${game.state}")
 
                 callback(game, null)
-                //TODO activate Log
-                //Log.d(TAG, "Poll game success")
+                Log.d(TAG, "Poll game success")
             }, {
 
                 callback(null, it.networkResponse.statusCode)
+                println("Error polling game")
                 Log.d(TAG, "Error polling game")
             }) {
             override fun getHeaders(): MutableMap<String, String> {

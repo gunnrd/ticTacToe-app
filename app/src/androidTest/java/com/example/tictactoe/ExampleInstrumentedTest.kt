@@ -26,8 +26,8 @@ class ExampleInstrumentedTest {
 
     var state: Game? = null
     var gameId: String = ""
-    private val playerOne: String = "Gunn"
-    private val playerTwo: String = "Renate"
+    private val playerOne: String = "Johnny"
+    private val playerTwo: String = "Bruce"
     private val initState = listOf(listOf("0","0","0"), listOf("0","0","0"), listOf("0","0","0"))
     private val newGameState = listOf(listOf("X","0","0"), listOf("X","0","0"), listOf("X","0","0"))
 
