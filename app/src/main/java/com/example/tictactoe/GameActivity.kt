@@ -11,6 +11,7 @@ import com.example.tictactoe.GameManager.newState
 import com.example.tictactoe.GameManager.pollState
 import com.example.tictactoe.GameManager.state
 import com.example.tictactoe.GameManager.host
+import com.example.tictactoe.GameManager.activePlayer
 import com.example.tictactoe.api.GameService.context
 import com.example.tictactoe.api.data.Game
 import com.example.tictactoe.databinding.ActivityGameBinding
@@ -53,6 +54,10 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         gameHandler.post { poll() }
 
         binding.buttonStartNewGame.isVisible = false
+
+        if (!host && binding.textViewInfo.text.isEmpty()) {
+            binding.textViewInfo.text = context.getString(R.string.wait_for_player_one)
+        }
 
         binding.textView0.setOnClickListener(this)
         binding.textView1.setOnClickListener(this)
@@ -105,10 +110,13 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         if (host) {
             textView.text = MARK.PLAYERONE.value
             newState[i] = MARK.PLAYERONE.value
+            binding.textViewInfo.text = context.getString(R.string.wait_for_player_two)
         } else {
             textView.text = MARK.PLAYERTWO.value
             newState[i] = MARK.PLAYERTWO.value
+            binding.textViewInfo.text = context.getString(R.string.wait_for_player_one)
         }
+
         textView.isClickable = false
         state = newState.chunked(3)
         checkWinner()
@@ -117,13 +125,20 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun poll() {
         if (GameManager.gameId != "") {
-            GameManager.pollGame()
 
-            if (GameManager.playerTwo != "") {
-                binding.playerTwoValue.text = GameManager.playerTwo
+            if (binding.textViewInfo.text == context.getString(R.string.player_one_wins)
+                    || binding.textViewInfo.text == context.getString(R.string.player_two_wins)) {
+                return
             }
 
+            GameManager.pollGame()
+
             if (pollState.isNotEmpty()) {
+
+                if (GameManager.playerTwo != "" && binding.playerTwoValue.text.isEmpty()) {
+                    binding.playerTwoValue.text = GameManager.playerTwo
+                }
+
                 displayPollChanges()
                 checkWinner()
             }
@@ -137,7 +152,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             GameManager.startNewGame()
 
             binding.buttonStartNewGame.isVisible = false
-            binding.textViewWinner.text = ""
+            binding.textViewInfo.text = ""
             binding.textView0.text = ""
             binding.textView1.text = ""
             binding.textView2.text = ""
@@ -154,21 +169,35 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private fun checkWinner() {
         when {
             GameManager.countCheckedCells == 9 && !GameManager.winConditions() -> {
-                binding.textViewWinner.text = context.getString(R.string.draw)
+                binding.textViewInfo.text = context.getString(R.string.draw)
                 binding.buttonStartNewGame.isVisible = true
                 newState = GameManager.gameStateStart.flatten() as MutableList<String>
                 pollState = GameManager.gameStateStart.flatten() as MutableList<String>
                 deactivateClickable()
             }
-            GameManager.winConditions() && host -> {
-                binding.textViewWinner.text = context.getString(R.string.player_one_wins)
+            GameManager.winConditions() && host && activePlayer -> {
+                binding.textViewInfo.text = context.getString(R.string.player_one_wins)
                 binding.buttonStartNewGame.isVisible = true
                 newState = GameManager.gameStateStart.flatten() as MutableList<String>
                 pollState = GameManager.gameStateStart.flatten() as MutableList<String>
                 deactivateClickable()
             }
-            GameManager.winConditions() && !host -> {
-                binding.textViewWinner.text = context.getString(R.string.player_two_wins)
+            GameManager.winConditions() && !host && !activePlayer -> {
+                binding.textViewInfo.text = context.getString(R.string.player_one_wins)
+                binding.buttonStartNewGame.isVisible = true
+                newState = GameManager.gameStateStart.flatten() as MutableList<String>
+                pollState = GameManager.gameStateStart.flatten() as MutableList<String>
+                deactivateClickable()
+            }
+            GameManager.winConditions() && host && !activePlayer -> {
+                binding.textViewInfo.text = context.getString(R.string.player_two_wins)
+                binding.buttonStartNewGame.isVisible = true
+                newState = GameManager.gameStateStart.flatten() as MutableList<String>
+                pollState = GameManager.gameStateStart.flatten() as MutableList<String>
+                deactivateClickable()
+            }
+            GameManager.winConditions() && !host && activePlayer -> {
+                binding.textViewInfo.text = context.getString(R.string.player_two_wins)
                 binding.buttonStartNewGame.isVisible = true
                 newState = GameManager.gameStateStart.flatten() as MutableList<String>
                 pollState = GameManager.gameStateStart.flatten() as MutableList<String>
@@ -182,38 +211,47 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             pollState[0] != MARK.ZERO.value && binding.textView0.text.isEmpty()-> {
                 binding.textView0.text = pollState[0]
                 binding.textView0.isClickable = false
+                binding.textViewInfo.text = ""
             }
             pollState[1] != MARK.ZERO.value && binding.textView1.text.isEmpty() -> {
                 binding.textView1.text = pollState[1]
                 binding.textView1.isClickable = false
+                binding.textViewInfo.text = ""
             }
             pollState[2] != MARK.ZERO.value && binding.textView2.text.isEmpty() -> {
                 binding.textView2.text = pollState[2]
                 binding.textView2.isClickable = false
+                binding.textViewInfo.text = ""
             }
             pollState[3] != MARK.ZERO.value && binding.textView3.text.isEmpty() -> {
                 binding.textView3.text = pollState[3]
                 binding.textView3.isClickable = false
+                binding.textViewInfo.text = ""
             }
             pollState[4] != MARK.ZERO.value && binding.textView4.text.isEmpty() -> {
                 binding.textView4.text = pollState[4]
                 binding.textView4.isClickable = false
+                binding.textViewInfo.text = ""
             }
             pollState[5] != MARK.ZERO.value && binding.textView5.text.isEmpty() -> {
                 binding.textView5.text = pollState[5]
                 binding.textView5.isClickable = false
+                binding.textViewInfo.text = ""
             }
             pollState[6] != MARK.ZERO.value && binding.textView6.text.isEmpty() -> {
                 binding.textView6.text = pollState[6]
                 binding.textView6.isClickable = false
+                binding.textViewInfo.text = ""
             }
             pollState[7] != MARK.ZERO.value && binding.textView7.text.isEmpty() -> {
                 binding.textView7.text = pollState[7]
                 binding.textView7.isClickable = false
+                binding.textViewInfo.text = ""
             }
             pollState[8] != MARK.ZERO.value && binding.textView8.text.isEmpty() -> {
                 binding.textView8.text = pollState[8]
                 binding.textView8.isClickable = false
+                binding.textViewInfo.text = ""
             }
         }
     }

@@ -128,23 +128,27 @@ object GameService {
         val requestData = JSONObject()
 
         val request = object : JsonObjectRequest(
-            Method.GET, url, requestData,
-            {
-                val game = Gson().fromJson(it.toString(0), Game::class.java)
+                Method.GET, url, requestData,
+                {
+                    val game = Gson().fromJson(it.toString(0), Game::class.java)
 
-                GameManager.state = game.state
-                GameManager.pollState = game.state.flatten() as MutableList<String>
+                    GameManager.state = game.state
+                    GameManager.pollState = game.state.flatten() as MutableList<String>
 
-                println("Polled game state from server: ${game.state}")
+                    if (game.players.size == 2) {
+                        GameManager.playerTwo = game.players[1]
+                    }
 
-                callback(game, null)
-                Log.d(TAG, "Poll game success")
-            }, {
+                    println("Polled game state from server: ${game.state}")
 
-                callback(null, it.networkResponse.statusCode)
-                println("Error polling game")
-                Log.d(TAG, "Error polling game")
-            }) {
+                    callback(game, null)
+                    //Log.d(TAG, "Poll game success")
+                }, {
+
+            callback(null, it.networkResponse.statusCode)
+            println("Error polling game")
+            Log.d(TAG, "Error polling game")
+        }) {
             override fun getHeaders(): MutableMap<String, String> {
                 val headers = HashMap<String, String>()
                 headers["Content-Type"] = "application/json"

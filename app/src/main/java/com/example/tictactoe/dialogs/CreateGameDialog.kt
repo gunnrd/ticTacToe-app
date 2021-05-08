@@ -26,7 +26,7 @@ class CreateGameDialog(): DialogFragment() {
                     if(binding.playerName.text.toString() != ""){
                         listener.onDialogCreateGame(binding.playerName.text.toString())
 
-                        GameManager.player = binding.playerName.text.toString()
+                        GameManager.playerOne = binding.playerName.text.toString()
                         GameManager.createGame()
 
                     } else {

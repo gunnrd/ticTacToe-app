@@ -7,13 +7,14 @@ import com.example.tictactoe.App.Companion.context
 import com.example.tictactoe.api.GameService
 import com.example.tictactoe.api.data.Game
 import com.example.tictactoe.api.data.GameState
+import java.util.*
 
 // Creator of game starts the game
 
 object GameManager {
 
     var gameId: String = ""
-    var player: String = ""
+    var playerOne: String = ""
     var playerTwo: String = ""
     var state: GameState? = null
     var activePlayer: Boolean = false
@@ -42,8 +43,6 @@ object GameManager {
                 return true
             state[0][2] == state[1][1] && state[0][2] == state[2][0] && state[0][2] != "0" ->
                 return true
-            countCheckedCells == 9 -> return false
-
             else -> {
                 return false
             }
@@ -61,14 +60,14 @@ object GameManager {
     }
 
     fun createGame() {
-        GameService.createGame(player, gameStateStart) { game: Game?, error: Int? ->
+        GameService.createGame(playerOne, gameStateStart) { game: Game?, error: Int? ->
             if (error != null) {
                 //TODO give response to given error code
             } else {
                 gameId = game?.gameId.toString()
                 state = gameStateStart
-                activePlayer = true
                 host = true
+                activePlayer = true
                 newState = state?.flatten() as MutableList<String>
 
                 if (game != null) {
@@ -84,6 +83,8 @@ object GameManager {
                 //TODO give response to given error code
             } else {
                 if (game != null) {
+                    host = false
+                    activePlayer = false
                     startActivity(game)
                 }
             }
@@ -96,7 +97,7 @@ object GameManager {
                 if (error != null) {
                     //TODO give response to given error code
                 } else {
-                    activePlayer = !activePlayer
+                    activePlayer = false
                     countCheckedCells += 1
                     newState = state?.flatten() as MutableList<String>
                 }
@@ -105,16 +106,21 @@ object GameManager {
     }
 
     fun pollGame() {
-        GameService.pollGame(gameId) { _: Game?, error: Int? ->
+        GameService.pollGame(gameId) { game: Game?, error: Int? ->
             if (error != null) {
                 //TODO give response to given error code
             } else {
-                winConditions()
 
-                if ((newState != pollState) && !winConditions()) {
-                    activePlayer = true
-                    countCheckedCells += 1
+                if (newState != pollState) {
+
+                    if (winConditions()) {
+                        activePlayer = false
+                    } else {
+                        activePlayer = true
+                        countCheckedCells += 1
+                    }
                 }
+                newState = pollState
             }
         }
     }
