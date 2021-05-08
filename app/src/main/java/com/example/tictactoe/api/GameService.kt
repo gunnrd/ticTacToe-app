@@ -139,6 +139,7 @@ object GameService {
                         GameManager.playerTwo = game.players[1]
                     }
 
+                    //TODO remove print on line below
                     println("Polled game state from server: ${game.state}")
 
                     callback(game, null)

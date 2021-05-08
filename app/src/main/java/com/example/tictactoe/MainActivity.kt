@@ -1,8 +1,10 @@
 package com.example.tictactoe
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.example.tictactoe.App.Companion.context
 import com.example.tictactoe.databinding.ActivityMainBinding
 import com.example.tictactoe.dialogs.CreateGameDialog
 import com.example.tictactoe.dialogs.GameDialogListener
@@ -24,6 +26,10 @@ class MainActivity : AppCompatActivity(), GameDialogListener {
 
         binding.buttonJoinGame.setOnClickListener {
             joinGame()
+        }
+
+        binding.buttonPlayVsBot.setOnClickListener {
+            startActivity(Intent(context, GameBotActivity::class.java))
         }
     }
 

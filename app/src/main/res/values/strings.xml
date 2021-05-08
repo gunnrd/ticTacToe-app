@@ -13,6 +13,7 @@
     <string name="start_new_game">Start new game</string>
     <string name="create_new_game">Create new game</string>
     <string name="join_game">Join game</string>
+    <string name="play_vs_bot">Play vs bot</string>
     <string name="player_name">Player name</string>
 
     <string name="game_id">Game id:</string>
@@ -20,9 +21,15 @@
     <string name="playerTwo">Player two:</string>
 
     <string name="draw">Draw!</string>
-    <string name="player_one_wins">Player one wins</string>
-    <string name="player_two_wins">Player two wins</string>
+    <string name="player_one_wins">Player one won</string>
+    <string name="player_two_wins">Player two won</string>
+    <string name="you_won">You won</string>
+    <string name="you_lose">You lose</string>
 
     <string name="wait_for_player_one">Waiting for player one..</string>
     <string name="wait_for_player_two">Waiting for player two..</string>
+
+    <string name="choose_mark">Choose mark</string>
+    <string name="x_mark">X</string>
+    <string name="o_mark">O</string>
 </resources>
