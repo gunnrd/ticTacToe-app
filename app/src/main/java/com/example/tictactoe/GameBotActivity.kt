@@ -5,17 +5,19 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.example.tictactoe.App.Companion.context
 import com.example.tictactoe.databinding.ActivityGameBotBinding
 import java.util.*
 
 class GameBotActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityGameBotBinding
-    var activePlayer = 1
-    var player = 0
-    var countCheckedCells = 0
-    private val playerX = mutableListOf<Int>()
-    private val playerO = mutableListOf<Int>()
+    private var activePlayer = 1
+    private var player = 0
+    private var countCheckedCells = 0
+    private var playerX = mutableListOf<Int>()
+    private var playerO = mutableListOf<Int>()
+    private var winner = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +30,6 @@ class GameBotActivity : AppCompatActivity(), View.OnClickListener {
         supportActionBar?.title = "Main menu"
 
         binding.buttonStartNewGame.isVisible = false
-
 
         binding.buttonX.setOnClickListener {
             player = 1
@@ -48,6 +49,8 @@ class GameBotActivity : AppCompatActivity(), View.OnClickListener {
         binding.textView6.setOnClickListener(this)
         binding.textView7.setOnClickListener(this)
         binding.textView8.setOnClickListener(this)
+
+        startNewGame()
     }
 
     override fun onClick(view: View) {
@@ -89,7 +92,7 @@ class GameBotActivity : AppCompatActivity(), View.OnClickListener {
             activePlayer = 1
         }
         textView.isClickable = false
-        //checkWinner()
+        checkWinner()
     }
 
     private fun playGameO(i: Int, textView: TextView) {
@@ -107,7 +110,7 @@ class GameBotActivity : AppCompatActivity(), View.OnClickListener {
 
         }
         textView.isClickable = false
-        //checkWinner()
+        checkWinner()
     }
 
     private fun bot() {
@@ -143,6 +146,139 @@ class GameBotActivity : AppCompatActivity(), View.OnClickListener {
             playGameX(cellIndex, textView)
         } else if (player == 2) {
             playGameO(cellIndex, textView)
+        }
+    }
+
+    private fun startNewGame() {
+        binding.buttonStartNewGame.setOnClickListener {
+            activePlayer = 1
+            player = 0
+            countCheckedCells = 0
+            playerX = mutableListOf()
+            playerO = mutableListOf()
+
+            binding.buttonStartNewGame.isVisible = false
+            binding.textViewInfo.text = ""
+            binding.textView0.text = ""
+            binding.textView1.text = ""
+            binding.textView2.text = ""
+            binding.textView3.text = ""
+            binding.textView4.text = ""
+            binding.textView5.text = ""
+            binding.textView6.text = ""
+            binding.textView7.text = ""
+            binding.textView8.text = ""
+
+            activateClickable()
+        }
+    }
+
+    private fun activateClickable() {
+        binding.textView0.isClickable = true
+        binding.textView1.isClickable = true
+        binding.textView2.isClickable = true
+        binding.textView3.isClickable = true
+        binding.textView4.isClickable = true
+        binding.textView5.isClickable = true
+        binding.textView6.isClickable = true
+        binding.textView7.isClickable = true
+        binding.textView8.isClickable = true
+    }
+
+    private fun checkWinner() {
+        when {
+            //TODO sett opp draw
+            winConditions() && winner == 1 && player == 1 -> {
+                binding.textViewInfo.text = context.getString(R.string.you_won)
+                binding.buttonStartNewGame.isVisible = true
+                activateClickable()
+            }
+            winConditions() && winner == 2 && player == 1 -> {
+                binding.textViewInfo.text = context.getString(R.string.you_lose)
+                binding.buttonStartNewGame.isVisible = true
+                activateClickable()
+            }
+            winConditions() && winner == 1 && player == 2 -> {
+                binding.textViewInfo.text = context.getString(R.string.you_lose)
+                binding.buttonStartNewGame.isVisible = true
+                activateClickable()
+            }
+            winConditions() && winner == 2 && player == 2 -> {
+                binding.textViewInfo.text = context.getString(R.string.you_won)
+                binding.buttonStartNewGame.isVisible = true
+                activateClickable()
+            }
+        }
+    }
+
+    private fun winConditions(): Boolean {
+        when {
+            playerX.contains(0) && playerX.contains(1) && playerX.contains(2) -> {
+                winner = 1
+                return true
+            }
+            playerO.contains(0) && playerO.contains(1) && playerO.contains(2) -> {
+                winner = 2
+                return true
+            }
+            playerX.contains(3) && playerX.contains(4) && playerX.contains(5) -> {
+                winner = 1
+                return true
+            }
+            playerO.contains(3) && playerO.contains(4) && playerO.contains(5) -> {
+                winner = 2
+                return true
+            }
+            playerX.contains(6) && playerX.contains(7) && playerX.contains(8) -> {
+                winner = 1
+                return true
+            }
+            playerO.contains(6) && playerO.contains(7) && playerO.contains(8) -> {
+                winner = 2
+                return true
+            }
+            playerX.contains(0) && playerX.contains(3) && playerX.contains(6) -> {
+                winner = 1
+                return true
+            }
+            playerO.contains(0) && playerO.contains(3) && playerO.contains(6) -> {
+                winner = 2
+                return true
+            }
+            playerX.contains(1) && playerX.contains(4) && playerX.contains(7) -> {
+                winner = 1
+                return true
+            }
+            playerO.contains(1) && playerO.contains(4) && playerO.contains(7) -> {
+                winner = 2
+                return true
+            }
+            playerX.contains(2) && playerX.contains(5) && playerX.contains(8) -> {
+                winner = 1
+                return true
+            }
+            playerO.contains(2) && playerO.contains(5) && playerO.contains(8) -> {
+                winner = 2
+                return true
+            }
+            playerX.contains(0) && playerX.contains(4) && playerX.contains(8) -> {
+                winner = 1
+                return true
+            }
+            playerO.contains(0) && playerO.contains(4) && playerO.contains(8) -> {
+                winner = 2
+                return true
+            }
+            playerX.contains(2) && playerX.contains(4) && playerX.contains(6) -> {
+                winner = 1
+                return true
+            }
+            playerO.contains(2) && playerO.contains(4) && playerO.contains(6) -> {
+                winner = 2
+                return true
+            }
+
+            else -> { return false }
         }
     }
 }
