@@ -139,7 +139,6 @@ object GameManager {
                         !activePlayer
                     }
                     countCheckedCells = 0
-                    newState = state?.flatten() as MutableList<String>
                 }
             }
         }

@@ -145,27 +145,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun startNewGame() {
-        binding.buttonStartNewGame.setOnClickListener {
-            GameManager.updateGame()
-            pollState = mutableListOf()
-            GameManager.startNewGame()
-
-            binding.buttonStartNewGame.isVisible = false
-            binding.textViewInfo.text = ""
-            binding.textView0.text = ""
-            binding.textView1.text = ""
-            binding.textView2.text = ""
-            binding.textView3.text = ""
-            binding.textView4.text = ""
-            binding.textView5.text = ""
-            binding.textView6.text = ""
-            binding.textView7.text = ""
-            binding.textView8.text = ""
-            activateClickable()
-        }
-    }
-
     private fun checkWinner() {
         when {
             GameManager.countCheckedCells == 9 && !GameManager.winConditions() -> {
@@ -253,6 +232,29 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                 binding.textView8.isClickable = false
                 binding.textViewInfo.text = ""
             }
+        }
+    }
+
+    private fun startNewGame() {
+        binding.buttonStartNewGame.setOnClickListener {
+            newState = mutableListOf()
+            pollState = mutableListOf()
+
+            binding.buttonStartNewGame.isVisible = false
+            binding.textViewInfo.text = ""
+            binding.textView0.text = ""
+            binding.textView1.text = ""
+            binding.textView2.text = ""
+            binding.textView3.text = ""
+            binding.textView4.text = ""
+            binding.textView5.text = ""
+            binding.textView6.text = ""
+            binding.textView7.text = ""
+            binding.textView8.text = ""
+
+            activateClickable()
+            GameManager.startNewGame()
+            gameHandler.post(poll)
         }
     }
 
