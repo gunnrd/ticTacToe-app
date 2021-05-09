@@ -1,43 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
+    android:layout_gravity="center_horizontal"
     tools:context=".GameBotActivity">
 
     <TextView
         android:id="@+id/textViewChooseMark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="10dp"
-        android:textSize="20sp"
+        android:layout_marginTop="30dp"
+
+        android:layout_gravity="center_horizontal"
+        android:textSize="25sp"
         android:text="@string/choose_mark" />
+
+    <TextView
+        android:id="@+id/textViewStartingPlayer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:layout_gravity="center_horizontal"
+        android:textSize="15sp"
+        android:text="@string/mark_info" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:orientation="horizontal"
         android:layout_marginBottom="30dp">
 
-        <Button
-            android:id="@+id/buttonX"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:text="@string/x_mark"
-            style="@style/Theme.TicTacToe" />
+        <ImageView
+            android:id="@+id/imageViewX"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="@string/x_image"
+            app:srcCompat="@drawable/ic_cross" />
 
-        <Button
-            android:id="@+id/buttonO"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:text="@string/o_mark"
-            style="@style/Theme.TicTacToe" />
+        <ImageView
+            android:id="@+id/imageViewO"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="@string/o_image"
+            app:srcCompat="@drawable/ic_circle" />
     </LinearLayout>
 
     <TableLayout
@@ -110,18 +127,21 @@
 
     <TextView
         android:id="@+id/textViewInfo"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:layout_gravity="center"
-        android:textSize="30sp"
+        android:textAlignment="center"
+        android:textSize="20sp"
         android:text="" />
 
     <Button
         android:id="@+id/buttonStartNewGame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center"
         android:text="@string/start_new_game" />
 

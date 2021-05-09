@@ -3,6 +3,7 @@ package com.example.tictactoe
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.style.ImageSpan
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -59,12 +60,11 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         pollState = mutableListOf()
 
-        binding.buttonStartNewGame.isVisible = false
-
         if (!host && binding.textViewInfo.text.isEmpty()) {
             binding.textViewInfo.text = context.getString(R.string.wait_for_player_one)
         }
 
+        binding.buttonStartNewGame.isVisible = false
         binding.textView0.setOnClickListener(this)
         binding.textView1.setOnClickListener(this)
         binding.textView2.setOnClickListener(this)

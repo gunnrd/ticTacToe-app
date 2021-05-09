@@ -31,11 +31,11 @@ class GameBotActivity : AppCompatActivity(), View.OnClickListener {
 
         binding.buttonStartNewGame.isVisible = false
 
-        binding.buttonX.setOnClickListener {
+        binding.imageViewX.setOnClickListener {
             player = 1
         }
 
-        binding.buttonO.setOnClickListener {
+        binding.imageViewO.setOnClickListener {
             player = 2
             bot()
         }
@@ -96,6 +96,7 @@ class GameBotActivity : AppCompatActivity(), View.OnClickListener {
             playerO.add(i)
             activePlayer = 1
         }
+
         textView.isClickable = false
         checkWinner()
     }
@@ -114,6 +115,7 @@ class GameBotActivity : AppCompatActivity(), View.OnClickListener {
             bot()
 
         }
+
         textView.isClickable = false
         checkWinner()
     }
@@ -123,7 +125,7 @@ class GameBotActivity : AppCompatActivity(), View.OnClickListener {
         countCheckedCells += 1
 
         for (cell  in 0..8) {
-            if (!(playerX.contains(cell ) || playerO.contains(cell ))) {
+            if (!(playerX.contains(cell) || playerO.contains(cell))) {
                 availableCells.add(cell)
             }
         }
@@ -192,7 +194,15 @@ class GameBotActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun checkWinner() {
         when {
-            //TODO sett opp draw
+            !winConditions()
+                    && !binding.textView0.isClickable && !binding.textView1.isClickable && !binding.textView2.isClickable
+                    && !binding.textView3.isClickable && !binding.textView4.isClickable && !binding.textView5.isClickable
+                    && !binding.textView6.isClickable && !binding.textView7.isClickable && !binding.textView8.isClickable -> {
+                binding.textViewInfo.text = context.getString(R.string.draw)
+                binding.buttonStartNewGame.isVisible = true
+                activateClickable()
+            }
+
             winConditions() && winner == 1 && player == 1 -> {
                 binding.textViewInfo.text = context.getString(R.string.you_win)
                 binding.buttonStartNewGame.isVisible = true

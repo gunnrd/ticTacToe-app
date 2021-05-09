@@ -30,7 +30,8 @@
 
     <string name="player_left_game">Opponent left the game. You win</string>
 
-    <string name="choose_mark">Choose mark</string>
-    <string name="x_mark">X</string>
-    <string name="o_mark">O</string>
+    <string name="choose_mark">Click to choose mark</string>
+    <string name="mark_info">X starts the game</string>
+    <string name="x_image">X</string>
+    <string name="o_image">O</string>
 </resources>
