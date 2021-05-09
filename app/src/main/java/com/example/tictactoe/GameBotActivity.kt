@@ -194,7 +194,7 @@ class GameBotActivity : AppCompatActivity(), View.OnClickListener {
         when {
             //TODO sett opp draw
             winConditions() && winner == 1 && player == 1 -> {
-                binding.textViewInfo.text = context.getString(R.string.you_won)
+                binding.textViewInfo.text = context.getString(R.string.you_win)
                 binding.buttonStartNewGame.isVisible = true
                 activateClickable()
             }
@@ -209,7 +209,7 @@ class GameBotActivity : AppCompatActivity(), View.OnClickListener {
                 activateClickable()
             }
             winConditions() && winner == 2 && player == 2 -> {
-                binding.textViewInfo.text = context.getString(R.string.you_won)
+                binding.textViewInfo.text = context.getString(R.string.you_win)
                 binding.buttonStartNewGame.isVisible = true
                 activateClickable()
             }

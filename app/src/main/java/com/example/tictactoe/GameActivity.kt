@@ -6,6 +6,7 @@ import android.os.Looper
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.tictactoe.GameManager.activePlayer
@@ -13,6 +14,7 @@ import com.example.tictactoe.GameManager.host
 import com.example.tictactoe.GameManager.newState
 import com.example.tictactoe.GameManager.pollState
 import com.example.tictactoe.GameManager.state
+import com.example.tictactoe.GameManager.playerTwo
 import com.example.tictactoe.api.GameService.context
 import com.example.tictactoe.api.data.Game
 import com.example.tictactoe.databinding.ActivityGameBinding
@@ -21,6 +23,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityGameBinding
     private lateinit var gameHandler: Handler
+    private val notifyQuitGameList = mutableListOf("3", "3", "3", "3", "3", "3", "3", "3", "3")
 
     private enum class MARK(var value: String) {
         ZERO("0"),
@@ -54,6 +57,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         gameHandler = Handler(Looper.getMainLooper())
         gameHandler.post { poll() }
 
+        pollState = mutableListOf()
+
         binding.buttonStartNewGame.isVisible = false
 
         if (!host && binding.textViewInfo.text.isEmpty()) {
@@ -75,8 +80,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        // Due to issue with UI not resetting properly on creating new game second time, pollState is zeroed out.
-        pollState = mutableListOf()
         gameHandler.removeCallbacks(poll)
     }
 
@@ -93,6 +96,20 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return super.onSupportNavigateUp()
+    }
+
+    override fun onBackPressed() {
+        AlertDialog.Builder(this)
+            .setMessage("Are you sure you want to leave current game?")
+            .setPositiveButton("Ok") { _, _ ->
+                super.onBackPressed()
+                state = notifyQuitGameList.chunked(3)
+                GameManager.updateGame()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     override fun onClick(view: View) {
@@ -136,27 +153,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         GameManager.updateGame()
     }
 
-    private fun poll() {
-        if (GameManager.gameId != "") {
-
-            if (binding.textViewInfo.text == context.getString(R.string.player_one_wins) || binding.textViewInfo.text == context.getString(R.string.player_two_wins)) {
-                return
-            }
-
-            GameManager.pollGame()
-
-            if (pollState.isNotEmpty()) {
-
-                if (GameManager.playerTwo != "" && binding.playerTwoValue.text.isEmpty()) {
-                    binding.playerTwoValue.text = GameManager.playerTwo
-                }
-
-                displayPollChanges()
-                checkWinner()
-            }
-        }
-    }
-
     private fun checkWinner() {
         when {
             GameManager.countCheckedCells == 9 && !GameManager.winConditions() -> {
@@ -167,32 +163,62 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                 deactivateClickable()
             }
             GameManager.winConditions() && host && activePlayer -> {
-                binding.textViewInfo.text = context.getString(R.string.player_one_wins)
+                binding.textViewInfo.text = context.getString(R.string.you_win)
                 binding.buttonStartNewGame.isVisible = true
                 newState = GameManager.gameStateStart.flatten() as MutableList<String>
                 pollState = GameManager.gameStateStart.flatten() as MutableList<String>
                 deactivateClickable()
             }
             GameManager.winConditions() && !host && !activePlayer -> {
-                binding.textViewInfo.text = context.getString(R.string.player_one_wins)
+                binding.textViewInfo.text = context.getString(R.string.you_lose)
                 binding.buttonStartNewGame.isVisible = true
                 newState = GameManager.gameStateStart.flatten() as MutableList<String>
                 pollState = GameManager.gameStateStart.flatten() as MutableList<String>
                 deactivateClickable()
             }
             GameManager.winConditions() && host && !activePlayer -> {
-                binding.textViewInfo.text = context.getString(R.string.player_two_wins)
+                binding.textViewInfo.text = context.getString(R.string.you_lose)
                 binding.buttonStartNewGame.isVisible = true
                 newState = GameManager.gameStateStart.flatten() as MutableList<String>
                 pollState = GameManager.gameStateStart.flatten() as MutableList<String>
                 deactivateClickable()
             }
             GameManager.winConditions() && !host && activePlayer -> {
-                binding.textViewInfo.text = context.getString(R.string.player_two_wins)
+                binding.textViewInfo.text = context.getString(R.string.you_win)
                 binding.buttonStartNewGame.isVisible = true
                 newState = GameManager.gameStateStart.flatten() as MutableList<String>
                 pollState = GameManager.gameStateStart.flatten() as MutableList<String>
                 deactivateClickable()
+            }
+        }
+    }
+
+    private fun poll() {
+        if (GameManager.gameId != "") {
+
+            if (binding.textViewInfo.text == context.getString(R.string.you_win)
+                || binding.textViewInfo.text == context.getString(R.string.you_lose)) {
+                return
+            }
+
+            GameManager.pollGame()
+
+            if (pollState.isNotEmpty()) {
+
+                if (playerTwo != "" && binding.playerTwoValue.text.isEmpty()) {
+                    binding.playerTwoValue.text = playerTwo
+                }
+
+                if (host && pollState == notifyQuitGameList) {
+                    binding.textViewInfo.text = context.getString(R.string.player_left_game)
+                    return
+                } else if (!host && pollState == notifyQuitGameList) {
+                    binding.textViewInfo.text = context.getString(R.string.player_left_game)
+                    return
+                }
+
+                displayPollChanges()
+                checkWinner()
             }
         }
     }

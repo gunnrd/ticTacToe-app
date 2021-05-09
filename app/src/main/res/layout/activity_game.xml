@@ -6,140 +6,164 @@
     android:orientation="vertical"
     tools:context=".GameActivity">
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="30dp">
+
         <TextView
             android:id="@+id/gameID"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
             android:text="@string/game_id"
             android:textSize="20sp" />
 
         <TextView
             android:id="@+id/gameIdValue"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
             android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="10dp">
 
         <TextView
             android:id="@+id/playerOneText"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="10dp"
             android:text="@string/playerOne"
             android:textSize="20sp" />
 
         <TextView
             android:id="@+id/playerOneValue"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
             android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp">
 
         <TextView
             android:id="@+id/playerTwoText"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="10dp"
             android:text="@string/playerTwo"
             android:textSize="20sp" />
 
         <TextView
             android:id="@+id/playerTwoValue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:textSize="20sp" />
-
-        <TableLayout
             android:layout_width="wrap_content"
-            android:layout_height="265dp"
-            android:layout_margin="10dp"
-            android:layout_gravity="center">
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
+    </LinearLayout>
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="265dp"
+        android:layout_margin="10dp"
+        android:layout_gravity="center">
 
-                <TextView
-                    android:id="@+id/textView0"
-                    style="@style/game_board"
-                    android:background="@color/tea_green_medium" />
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/textView1"
-                    style="@style/game_board"
-                    android:background="@color/tea_green_medium" />
+            <TextView
+                android:id="@+id/textView0"
+                style="@style/game_board"
+                android:background="@color/tea_green_medium" />
 
-                <TextView
-                    android:id="@+id/textView2"
-                    style="@style/game_board"
-                    android:background="@color/tea_green_medium" />
-            </TableRow>
+            <TextView
+                android:id="@+id/textView1"
+                style="@style/game_board"
+                android:background="@color/tea_green_medium" />
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/textView2"
+                style="@style/game_board"
+                android:background="@color/tea_green_medium" />
+        </TableRow>
 
-                <TextView
-                    android:id="@+id/textView3"
-                    style="@style/game_board"
-                    android:background="@color/tea_green_medium" />
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/textView4"
-                    style="@style/game_board"
-                    android:background="@color/tea_green_medium" />
+            <TextView
+                android:id="@+id/textView3"
+                style="@style/game_board"
+                android:background="@color/tea_green_medium" />
 
-                <TextView
-                    android:id="@+id/textView5"
-                    style="@style/game_board"
-                    android:background="@color/tea_green_medium" />
-            </TableRow>
+            <TextView
+                android:id="@+id/textView4"
+                style="@style/game_board"
+                android:background="@color/tea_green_medium" />
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/textView5"
+                style="@style/game_board"
+                android:background="@color/tea_green_medium" />
+        </TableRow>
 
-                <TextView
-                    android:id="@+id/textView6"
-                    style="@style/game_board"
-                    android:background="@color/tea_green_medium" />
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/textView7"
-                    style="@style/game_board"
-                    android:background="@color/tea_green_medium" />
+            <TextView
+                android:id="@+id/textView6"
+                style="@style/game_board"
+                android:background="@color/tea_green_medium" />
 
-                <TextView
-                    android:id="@+id/textView8"
-                    style="@style/game_board"
-                    android:background="@color/tea_green_medium" />
-            </TableRow>
+            <TextView
+                android:id="@+id/textView7"
+                style="@style/game_board"
+                android:background="@color/tea_green_medium" />
+
+            <TextView
+                android:id="@+id/textView8"
+                style="@style/game_board"
+                android:background="@color/tea_green_medium" />
+        </TableRow>
+
 
         </TableLayout>
 
-        <TextView
-            android:id="@+id/textViewInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:layout_gravity="center"
-            android:textSize="30sp"
-            android:text="" />
+    <TextView
+        android:id="@+id/textViewInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:text="" />
 
-        <Button
-            android:id="@+id/buttonStartNewGame"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center"
-            android:text="@string/start_new_game" />
+    <Button
+        android:id="@+id/buttonStartNewGame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:text="@string/start_new_game" />
 
 </LinearLayout>
