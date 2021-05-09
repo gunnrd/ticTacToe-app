@@ -7,11 +7,11 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.example.tictactoe.GameManager.activePlayer
+import com.example.tictactoe.GameManager.host
 import com.example.tictactoe.GameManager.newState
 import com.example.tictactoe.GameManager.pollState
 import com.example.tictactoe.GameManager.state
-import com.example.tictactoe.GameManager.host
-import com.example.tictactoe.GameManager.activePlayer
 import com.example.tictactoe.api.GameService.context
 import com.example.tictactoe.api.data.Game
 import com.example.tictactoe.databinding.ActivityGameBinding
@@ -70,6 +70,13 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         binding.textView8.setOnClickListener(this)
 
         startNewGame()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Due to issue with UI not resetting properly on creating new game second time, pollState is zeroed out.
+        pollState = mutableListOf()
+        gameHandler.removeCallbacks(poll)
     }
 
     override fun onPause() {

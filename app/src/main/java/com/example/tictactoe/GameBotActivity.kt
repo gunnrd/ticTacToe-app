@@ -53,6 +53,11 @@ class GameBotActivity : AppCompatActivity(), View.OnClickListener {
         startNewGame()
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return super.onSupportNavigateUp()
+    }
+
     override fun onClick(view: View) {
         var cellIndex = 10
         val textView = view as TextView

@@ -21,9 +21,9 @@
     <string name="playerTwo">Player two:</string>
 
     <string name="draw">Draw!</string>
-    <string name="player_one_wins">Player one won</string>
-    <string name="player_two_wins">Player two won</string>
-    <string name="you_won">You won</string>
+    <string name="player_one_wins">Player one wins</string>
+    <string name="player_two_wins">Player two wins</string>
+    <string name="you_won">You win</string>
     <string name="you_lose">You lose</string>
 
     <string name="wait_for_player_one">Waiting for player one..</string>
