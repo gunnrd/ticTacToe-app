@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.tictactoe.GameManager.activePlayer
@@ -114,6 +115,11 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun playGame(i: Int, textView: TextView) {
+        if (!activePlayer) {
+            Toast.makeText(context, "It's not your turn", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         if (host) {
             textView.text = MARK.PLAYERONE.value
             newState[i] = MARK.PLAYERONE.value
@@ -133,8 +139,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private fun poll() {
         if (GameManager.gameId != "") {
 
-            if (binding.textViewInfo.text == context.getString(R.string.player_one_wins)
-                    || binding.textViewInfo.text == context.getString(R.string.player_two_wins)) {
+            if (binding.textViewInfo.text == context.getString(R.string.player_one_wins) || binding.textViewInfo.text == context.getString(R.string.player_two_wins)) {
                 return
             }
 
@@ -247,8 +252,13 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             newState = mutableListOf()
             pollState = mutableListOf()
 
+            if (host) {
+                binding.textViewInfo.text = ""
+            } else {
+                binding.textViewInfo.text = context.getString(R.string.wait_for_player_one)
+            }
+
             binding.buttonStartNewGame.isVisible = false
-            binding.textViewInfo.text = ""
             binding.textView0.text = ""
             binding.textView1.text = ""
             binding.textView2.text = ""

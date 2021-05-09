@@ -28,14 +28,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
-            android:text="@string/x_mark" />
+            android:text="@string/x_mark"
+            style="@style/Theme.TicTacToe" />
 
         <Button
             android:id="@+id/buttonO"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:text="@string/o_mark" />
+            android:text="@string/o_mark"
+            style="@style/Theme.TicTacToe" />
     </LinearLayout>
 
     <TableLayout

@@ -7,7 +7,6 @@ import com.example.tictactoe.App.Companion.context
 import com.example.tictactoe.api.GameService
 import com.example.tictactoe.api.data.Game
 import com.example.tictactoe.api.data.GameState
-import java.util.*
 
 // Creator of game starts the game
 
@@ -115,7 +114,7 @@ object GameManager {
 
                     if (winConditions()) {
                         activePlayer = false
-                    } else {
+                    } else if (!winConditions() && !activePlayer){
                         activePlayer = true
                         countCheckedCells += 1
                     }
