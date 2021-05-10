@@ -19,14 +19,15 @@ object GameService {
 
     val context = App.context
     private val requestQueue: RequestQueue = Volley.newRequestQueue(context)
-    private val TAG: String = "GameService"
+    private val TAG: String = context.getString(R.string.game_service)
+    var networkResponseCode: Int? = null
 
     fun createGame(playerId: String, state: GameState, callback: GameServiceCallback) {
         val url = APIEndPoints.createGameUrl()
         val requestData = JSONObject()
 
-        requestData.put("player", playerId)
-        requestData.put("state", JSONArray(state))
+        requestData.put(context.getString(R.string.put_player), playerId)
+        requestData.put(context.getString(R.string.put_state), JSONArray(state))
 
         val request = object : JsonObjectRequest(
             Method.POST, url, requestData,
@@ -37,6 +38,7 @@ object GameService {
                 callback(game, null)
                 Log.d(TAG, "Game successfully created")
             }, {
+                networkResponseCode = it.networkResponse.statusCode
 
                 callback(null, it.networkResponse.statusCode)
                 Log.d(TAG, "Error creating new game")
@@ -57,7 +59,7 @@ object GameService {
         val url = APIEndPoints.joinGameUrl()
         val requestData = JSONObject()
 
-        requestData.put("player", playerId)
+        requestData.put(context.getString(R.string.put_player), playerId)
 
         val request = object : JsonObjectRequest(
             Method.POST, url, requestData,
@@ -69,6 +71,7 @@ object GameService {
                 callback(game, null)
                 Log.d(TAG, "Game successfully joined")
             }, {
+                networkResponseCode = it.networkResponse.statusCode
 
                 callback(null, it.networkResponse.statusCode)
                 Log.d(TAG, "Error joining new game")
@@ -89,8 +92,8 @@ object GameService {
         val url = APIEndPoints.updateGame()
         val requestData = JSONObject()
 
-        requestData.put("gameId", gameId)
-        requestData.put("state", JSONArray(state))
+        requestData.put(context.getString(R.string.put_game_id), gameId)
+        requestData.put(context.getString(R.string.put_state), JSONArray(state))
 
         val request = object : JsonObjectRequest(
             Method.POST, url, requestData,
@@ -100,6 +103,7 @@ object GameService {
                 callback(game, null)
                 Log.d(TAG, "Game successfully updated")
             }, {
+                networkResponseCode = it.networkResponse.statusCode
 
                 callback(null, it.networkResponse.statusCode)
                 Log.d(TAG, "Error updating game")
@@ -121,24 +125,24 @@ object GameService {
         val requestData = JSONObject()
 
         val request = object : JsonObjectRequest(
-                Method.GET, url, requestData,
-                {
-                    val game = Gson().fromJson(it.toString(0), Game::class.java)
-                    GameManager.state = game.state
-                    GameManager.pollState = game.state.flatten() as MutableList<String>
+            Method.GET, url, requestData,
+            {
+                val game = Gson().fromJson(it.toString(0), Game::class.java)
+                GameManager.state = game.state
+                GameManager.pollState = game.state.flatten() as MutableList<String>
 
-                    if (game.players.size == 2) {
-                        GameManager.playerTwo = game.players[1]
-                    }
+                if (game.players.size == 2) {
+                    GameManager.playerTwo = game.players[1]
+                }
 
-                    callback(game, null)
-                    Log.d(TAG, "Poll game success")
-                }, {
+                callback(game, null)
+                Log.d(TAG, "Poll game success")
+            }, {
+                networkResponseCode = it.networkResponse.statusCode
 
-            callback(null, it.networkResponse.statusCode)
-            println("Error polling game")
-            Log.d(TAG, "Error polling game")
-        }) {
+                callback(null, it.networkResponse.statusCode)
+                Log.d(TAG, "Error polling game")
+            }) {
             override fun getHeaders(): MutableMap<String, String> {
                 val headers = HashMap<String, String>()
                 headers["Content-Type"] = "application/json"

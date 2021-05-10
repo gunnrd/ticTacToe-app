@@ -3,6 +3,8 @@ package com.example.tictactoe
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.os.Bundle
+import android.widget.Toast
+import android.widget.Toast.makeText
 import com.example.tictactoe.App.Companion.context
 import com.example.tictactoe.api.GameService
 import com.example.tictactoe.api.data.Game
@@ -42,9 +44,8 @@ object GameManager {
                 return true
             state[0][2] == state[1][1] && state[0][2] == state[2][0] && state[0][2] != "0" ->
                 return true
-            else -> {
-                return false
-            }
+
+            else -> { return false }
         }
     }
 
@@ -61,7 +62,7 @@ object GameManager {
     fun createGame() {
         GameService.createGame(playerOne, gameStateStart) { game: Game?, error: Int? ->
             if (error != null) {
-                //TODO give response to given error code
+                errorResponseToast(GameService.networkResponseCode)
             } else {
                 gameId = game?.gameId.toString()
                 state = gameStateStart
@@ -79,7 +80,7 @@ object GameManager {
     fun joinGame() {
         GameService.joinGame(playerTwo, gameId) { game: Game?, error: Int? ->
             if (error != null) {
-                //TODO give response to given error code
+                errorResponseToast(GameService.networkResponseCode)
             } else {
                 if (game != null) {
                     host = false
@@ -94,7 +95,7 @@ object GameManager {
         state?.let {
             GameService.updateGame(gameId, it) { _: Game?, error: Int? ->
                 if (error != null) {
-                    //TODO give response to given error code
+                    errorResponseToast(GameService.networkResponseCode)
                 } else {
                     activePlayer = false
                     countCheckedCells += 1
@@ -107,11 +108,9 @@ object GameManager {
     fun pollGame() {
         GameService.pollGame(gameId) { _: Game?, error: Int? ->
             if (error != null) {
-                //TODO give response to given error code
+                errorResponseToast(GameService.networkResponseCode)
             } else {
-
                 if (newState != pollState) {
-
                     if (winConditions()) {
                         activePlayer = false
                     } else if (!winConditions() && !activePlayer){
@@ -130,7 +129,7 @@ object GameManager {
         state?.let {
             GameService.updateGame(gameId, it) { _: Game?, error: Int? ->
                 if (error != null) {
-                    //TODO give response to given error code
+                    errorResponseToast(GameService.networkResponseCode)
                 } else {
                     activePlayer = if (host) {
                         true
@@ -140,6 +139,16 @@ object GameManager {
                     countCheckedCells = 0
                 }
             }
+        }
+    }
+
+    private fun errorResponseToast(code: Int?) {
+        if (code == 500) {
+            makeText(context, context.getString(R.string.internal_server_error), Toast.LENGTH_LONG).show()
+        } else if (code == 501 || code == 502 || code == 503 || code == 504) {
+            makeText(context, context.getString(R.string.server_unavailable), Toast.LENGTH_LONG).show()
+        } else {
+            makeText(context, context.getString(R.string.other_error), Toast.LENGTH_LONG).show()
         }
     }
 }

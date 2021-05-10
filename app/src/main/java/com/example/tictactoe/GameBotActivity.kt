@@ -38,8 +38,8 @@ class GameBotActivity : AppCompatActivity(), View.OnClickListener {
 
         binding.imageViewO.setOnClickListener {
             player = 2
-            bot()
             binding.imageViewO.isClickable = false
+            bot()
         }
 
         binding.textView0.setOnClickListener(this)
@@ -78,7 +78,7 @@ class GameBotActivity : AppCompatActivity(), View.OnClickListener {
 
         if (player == 1) {
             playGameX(cellIndex, textView)
-        }else if (player == 2) {
+        } else if (player == 2) {
             playGameO(cellIndex, textView)
         }
     }
@@ -183,50 +183,36 @@ class GameBotActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun activateClickable() {
-        binding.imageViewX.isClickable = true
-        binding.imageViewO.isClickable = true
-        binding.textView0.isClickable = true
-        binding.textView1.isClickable = true
-        binding.textView2.isClickable = true
-        binding.textView3.isClickable = true
-        binding.textView4.isClickable = true
-        binding.textView5.isClickable = true
-        binding.textView6.isClickable = true
-        binding.textView7.isClickable = true
-        binding.textView8.isClickable = true
-    }
-
     private fun checkWinner() {
         when {
-            !winConditions()
-                    && !binding.textView0.isClickable && !binding.textView1.isClickable && !binding.textView2.isClickable
-                    && !binding.textView3.isClickable && !binding.textView4.isClickable && !binding.textView5.isClickable
-                    && !binding.textView6.isClickable && !binding.textView7.isClickable && !binding.textView8.isClickable -> {
+            !winConditions() &&
+                    !binding.textView0.isClickable && !binding.textView1.isClickable && !binding.textView2.isClickable &&
+                    !binding.textView3.isClickable && !binding.textView4.isClickable && !binding.textView5.isClickable &&
+                    !binding.textView6.isClickable && !binding.textView7.isClickable && !binding.textView8.isClickable -> {
                 binding.textViewInfo.text = context.getString(R.string.draw)
                 binding.buttonStartNewGame.isVisible = true
-                activateClickable()
+                deactivateClickable()
             }
-
             winConditions() && winner == 1 && player == 1 -> {
                 binding.textViewInfo.text = context.getString(R.string.you_win)
                 binding.buttonStartNewGame.isVisible = true
-                activateClickable()
+                deactivateClickable()
+
             }
             winConditions() && winner == 2 && player == 1 -> {
                 binding.textViewInfo.text = context.getString(R.string.you_lose)
                 binding.buttonStartNewGame.isVisible = true
-                activateClickable()
+                deactivateClickable()
             }
             winConditions() && winner == 1 && player == 2 -> {
                 binding.textViewInfo.text = context.getString(R.string.you_lose)
                 binding.buttonStartNewGame.isVisible = true
-                activateClickable()
+                deactivateClickable()
             }
             winConditions() && winner == 2 && player == 2 -> {
                 binding.textViewInfo.text = context.getString(R.string.you_win)
                 binding.buttonStartNewGame.isVisible = true
-                activateClickable()
+                deactivateClickable()
             }
         }
     }
@@ -300,5 +286,31 @@ class GameBotActivity : AppCompatActivity(), View.OnClickListener {
 
             else -> { return false }
         }
+    }
+
+    private fun activateClickable() {
+        binding.imageViewX.isClickable = true
+        binding.imageViewO.isClickable = true
+        binding.textView0.isClickable = true
+        binding.textView1.isClickable = true
+        binding.textView2.isClickable = true
+        binding.textView3.isClickable = true
+        binding.textView4.isClickable = true
+        binding.textView5.isClickable = true
+        binding.textView6.isClickable = true
+        binding.textView7.isClickable = true
+        binding.textView8.isClickable = true
+    }
+
+    private fun deactivateClickable() {
+        binding.textView0.isClickable = false
+        binding.textView1.isClickable = false
+        binding.textView2.isClickable = false
+        binding.textView3.isClickable = false
+        binding.textView4.isClickable = false
+        binding.textView5.isClickable = false
+        binding.textView6.isClickable = false
+        binding.textView7.isClickable = false
+        binding.textView8.isClickable = false
     }
 }

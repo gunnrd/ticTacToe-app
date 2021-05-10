@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.tictactoe.GameActivity
 import com.example.tictactoe.GameManager
+import com.example.tictactoe.R
 import com.example.tictactoe.databinding.DialogJoinGameBinding
 import java.lang.ClassCastException
 
@@ -23,14 +24,14 @@ class JoinGameDialog(): DialogFragment() {
             val binding = DialogJoinGameBinding.inflate(inflater)
 
             builder.apply {
-                setTitle("Join game")
-                setPositiveButton("Join") { _, _ ->
+                setTitle(context.getString(R.string.join_game))
+                setPositiveButton(context.getString(R.string.join)) { _, _ ->
 
                     when {
                         binding.joinGamePlayerName.text.isEmpty() ->
-                            Toast.makeText(it, "Player name is required", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(it, context.getString(R.string.name_required), Toast.LENGTH_SHORT).show()
                         binding.joinGameId.text.isEmpty() ->
-                            Toast.makeText(it, "Game id is required", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(it, context.getString(R.string.gameId_required), Toast.LENGTH_SHORT).show()
                         else -> {
                             listener.onDialogJoinGame(
                                 binding.joinGamePlayerName.text.toString(),
@@ -43,7 +44,7 @@ class JoinGameDialog(): DialogFragment() {
                         }
                     }
                 }
-                setNegativeButton("Cancel") { dialog, _ ->
+                setNegativeButton(context.getString(R.string.cancel_alert)) { dialog, _ ->
                     dialog.cancel()
                 }
                 setView(binding.root)

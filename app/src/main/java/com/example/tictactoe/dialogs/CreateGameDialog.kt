@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.tictactoe.GameManager
+import com.example.tictactoe.R
 import com.example.tictactoe.databinding.DialogCreateGameBinding
 import java.lang.ClassCastException
 
@@ -21,8 +22,8 @@ class CreateGameDialog(): DialogFragment() {
             val binding = DialogCreateGameBinding.inflate(inflater)
 
             builder.apply {
-                setTitle("Create game")
-                setPositiveButton("Create") { _, _ ->
+                setTitle(context.getString(R.string.create_game))
+                setPositiveButton(context.getString(R.string.create)) { _, _ ->
                     if(binding.playerName.text.toString() != ""){
                         listener.onDialogCreateGame(binding.playerName.text.toString())
 
@@ -30,10 +31,10 @@ class CreateGameDialog(): DialogFragment() {
                         GameManager.createGame()
 
                     } else {
-                        Toast.makeText(it, "Player name is required", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(it, context.getString(R.string.name_required), Toast.LENGTH_SHORT).show()
                     }
                 }
-                setNegativeButton("Cancel") { dialog, _ ->
+                setNegativeButton(context.getString(R.string.cancel_alert)) { dialog, _ ->
                     dialog.cancel()
                 }
                 setView(binding.root)

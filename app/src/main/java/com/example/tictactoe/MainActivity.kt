@@ -12,7 +12,7 @@ import com.example.tictactoe.dialogs.JoinGameDialog
 
 class MainActivity : AppCompatActivity(), GameDialogListener {
 
-    private val TAG: String = "MainActivity"
+    private val TAG: String = context.getString(R.string.main_activity)
     lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,16 +35,16 @@ class MainActivity : AppCompatActivity(), GameDialogListener {
 
     private fun createNewGame() {
         val dialog = CreateGameDialog()
-        dialog.show(supportFragmentManager,"CreateGameDialogFragment")
+        dialog.show(supportFragmentManager, context.getString(R.string.create_fragment))
     }
 
     private fun joinGame() {
         val dialog = JoinGameDialog()
-        dialog.show(supportFragmentManager,"JoinGameDialogFragment")
+        dialog.show(supportFragmentManager,context.getString(R.string.join_fragment))
     }
 
     override fun onDialogCreateGame(player: String) {
-        Log.d(TAG,player)
+        Log.d(TAG, player)
     }
 
     override fun onDialogJoinGame(player: String, gameId: String) {

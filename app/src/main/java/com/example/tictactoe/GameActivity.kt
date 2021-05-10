@@ -79,7 +79,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onDestroy() {
-        // Reset values due to issues with creating/joining game second time.
+        // Reset values due to issues with creating/joining game second time in same session.
         GameManager.playerOne = ""
         playerTwo = ""
         pollState = mutableListOf()
@@ -105,13 +105,13 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onBackPressed() {
         AlertDialog.Builder(this)
-            .setMessage("Are you sure you want to leave current game?")
-            .setPositiveButton("Ok") { _, _ ->
+            .setMessage(context.getString(R.string.leave_game))
+            .setPositiveButton(context.getString(R.string.ok_alert)) { _, _ ->
                 super.onBackPressed()
                 state = notifyQuitGameList.chunked(3)
                 GameManager.updateGame()
             }
-            .setNegativeButton("Cancel") { dialog, _ ->
+            .setNegativeButton(context.getString(R.string.cancel_alert)) { dialog, _ ->
                 dialog.dismiss()
             }
             .show()
@@ -138,7 +138,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun playGame(i: Int, textView: TextView) {
         if (!activePlayer) {
-            Toast.makeText(context, "It's not your turn", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.not_your_turn), Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -201,7 +201,9 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private fun poll() {
         if (GameManager.gameId != "") {
 
-            if (binding.textViewInfo.text == context.getString(R.string.you_win) || binding.textViewInfo.text == context.getString(R.string.you_lose)) {
+            if (binding.textViewInfo.text == context.getString(R.string.you_win) ||
+                binding.textViewInfo.text == context.getString(R.string.you_lose) ||
+                binding.textViewInfo.text == context.getString(R.string.draw)) {
                 return
             }
 

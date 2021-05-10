@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_new_game">Start new game</string>
+    <string name="create_new_game">Create new game</string>
+    <string name="join_game">Join game</string>
+    <string name="play_vs_bot">Play vs bot</string>
+    <string name="player_name">Player name</string>
+    <string name="game_id_hint">Game id</string>
+
+    <string name="game_id">Game id:</string>
+    <string name="playerOne">Player one:</string>
+    <string name="playerTwo">Player two:</string>
+
+    <string name="draw">Draw</string>
+    <string name="you_win">You win</string>
+    <string name="you_lose">You lose</string>
+
+    <string name="wait_for_player_one">Waiting for player one..</string>
+    <string name="wait_for_player_two">Waiting for player two..</string>
+    <string name="player_left_game">Opponent left the game. You win</string>
+
+    <string name="not_your_turn">It\'s not your turn</string>
+    <string name="leave_game">Are you sure you want to leave current game?</string>
+
+    <string name="choose_mark">Click to choose mark</string>
+    <string name="mark_info">X starts the game</string>
+    <string name="x_image">X</string>
+    <string name="o_image">O</string>
+</resources>
