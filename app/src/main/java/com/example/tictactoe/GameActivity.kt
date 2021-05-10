@@ -3,7 +3,6 @@ package com.example.tictactoe
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.style.ImageSpan
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -13,9 +12,11 @@ import androidx.core.view.isVisible
 import com.example.tictactoe.GameManager.activePlayer
 import com.example.tictactoe.GameManager.host
 import com.example.tictactoe.GameManager.newState
+import com.example.tictactoe.GameManager.playerTwo
 import com.example.tictactoe.GameManager.pollState
 import com.example.tictactoe.GameManager.state
-import com.example.tictactoe.GameManager.playerTwo
+import com.example.tictactoe.GameManager.gameStateStart
+import com.example.tictactoe.GameManager.winConditions
 import com.example.tictactoe.api.GameService.context
 import com.example.tictactoe.api.data.Game
 import com.example.tictactoe.databinding.ActivityGameBinding
@@ -47,9 +48,10 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(true)
-        supportActionBar?.title = "Main menu"
+        supportActionBar?.title = context.getString(R.string.main_menu)
 
         val response = intent.getParcelableExtra<Game>("RESPONSE")
+
         if (response != null) {
             binding.gameIdValue.text = response.gameId
             binding.playerOneValue.text = response.players[0]
@@ -57,8 +59,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         gameHandler = Handler(Looper.getMainLooper())
         gameHandler.post { poll() }
-
-        pollState = mutableListOf()
 
         if (!host && binding.textViewInfo.text.isEmpty()) {
             binding.textViewInfo.text = context.getString(R.string.wait_for_player_one)
@@ -79,8 +79,13 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+        // Reset values due to issues with creating/joining game second time.
+        GameManager.playerOne = ""
+        playerTwo = ""
+        pollState = mutableListOf()
+        GameManager.countCheckedCells = 0
         gameHandler.removeCallbacks(poll)
+        super.onDestroy()
     }
 
     override fun onPause() {
@@ -155,39 +160,39 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun checkWinner() {
         when {
-            GameManager.countCheckedCells == 9 && !GameManager.winConditions() -> {
+            GameManager.countCheckedCells == 9 && !winConditions() -> {
                 binding.textViewInfo.text = context.getString(R.string.draw)
                 binding.buttonStartNewGame.isVisible = true
-                newState = GameManager.gameStateStart.flatten() as MutableList<String>
-                pollState = GameManager.gameStateStart.flatten() as MutableList<String>
+                newState = gameStateStart.flatten() as MutableList<String>
+                pollState = gameStateStart.flatten() as MutableList<String>
                 deactivateClickable()
             }
-            GameManager.winConditions() && host && activePlayer -> {
+            winConditions() && host && activePlayer -> {
                 binding.textViewInfo.text = context.getString(R.string.you_win)
                 binding.buttonStartNewGame.isVisible = true
-                newState = GameManager.gameStateStart.flatten() as MutableList<String>
-                pollState = GameManager.gameStateStart.flatten() as MutableList<String>
+                newState = gameStateStart.flatten() as MutableList<String>
+                pollState = gameStateStart.flatten() as MutableList<String>
                 deactivateClickable()
             }
-            GameManager.winConditions() && !host && !activePlayer -> {
+            winConditions() && !host && !activePlayer -> {
                 binding.textViewInfo.text = context.getString(R.string.you_lose)
                 binding.buttonStartNewGame.isVisible = true
-                newState = GameManager.gameStateStart.flatten() as MutableList<String>
-                pollState = GameManager.gameStateStart.flatten() as MutableList<String>
+                newState = gameStateStart.flatten() as MutableList<String>
+                pollState = gameStateStart.flatten() as MutableList<String>
                 deactivateClickable()
             }
-            GameManager.winConditions() && host && !activePlayer -> {
+            winConditions() && host && !activePlayer -> {
                 binding.textViewInfo.text = context.getString(R.string.you_lose)
                 binding.buttonStartNewGame.isVisible = true
-                newState = GameManager.gameStateStart.flatten() as MutableList<String>
-                pollState = GameManager.gameStateStart.flatten() as MutableList<String>
+                newState = gameStateStart.flatten() as MutableList<String>
+                pollState = gameStateStart.flatten() as MutableList<String>
                 deactivateClickable()
             }
-            GameManager.winConditions() && !host && activePlayer -> {
+            winConditions() && !host && activePlayer -> {
                 binding.textViewInfo.text = context.getString(R.string.you_win)
                 binding.buttonStartNewGame.isVisible = true
-                newState = GameManager.gameStateStart.flatten() as MutableList<String>
-                pollState = GameManager.gameStateStart.flatten() as MutableList<String>
+                newState = gameStateStart.flatten() as MutableList<String>
+                pollState = gameStateStart.flatten() as MutableList<String>
                 deactivateClickable()
             }
         }
@@ -196,8 +201,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private fun poll() {
         if (GameManager.gameId != "") {
 
-            if (binding.textViewInfo.text == context.getString(R.string.you_win)
-                || binding.textViewInfo.text == context.getString(R.string.you_lose)) {
+            if (binding.textViewInfo.text == context.getString(R.string.you_win) || binding.textViewInfo.text == context.getString(R.string.you_lose)) {
                 return
             }
 

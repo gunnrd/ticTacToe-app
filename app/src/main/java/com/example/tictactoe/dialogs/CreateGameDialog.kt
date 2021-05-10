@@ -38,7 +38,6 @@ class CreateGameDialog(): DialogFragment() {
                 }
                 setView(binding.root)
             }
-
             builder.create()
 
         } ?: throw IllegalStateException("Activity cannot be null")

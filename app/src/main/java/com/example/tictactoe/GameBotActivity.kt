@@ -15,9 +15,9 @@ class GameBotActivity : AppCompatActivity(), View.OnClickListener {
     private var activePlayer = 1
     private var player = 0
     private var countCheckedCells = 0
+    private var winner = 0
     private var playerX = mutableListOf<Int>()
     private var playerO = mutableListOf<Int>()
-    private var winner = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,17 +27,19 @@ class GameBotActivity : AppCompatActivity(), View.OnClickListener {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(true)
-        supportActionBar?.title = "Main menu"
+        supportActionBar?.title = context.getString(R.string.main_menu)
 
         binding.buttonStartNewGame.isVisible = false
 
         binding.imageViewX.setOnClickListener {
             player = 1
+            binding.imageViewX.isClickable = false
         }
 
         binding.imageViewO.setOnClickListener {
             player = 2
             bot()
+            binding.imageViewO.isClickable = false
         }
 
         binding.textView0.setOnClickListener(this)
@@ -88,7 +90,7 @@ class GameBotActivity : AppCompatActivity(), View.OnClickListener {
             activePlayer = 2
             countCheckedCells += 1
 
-            if (countCheckedCells < 8) {
+            if (countCheckedCells < 8 && !winConditions()) {
                 bot()
             }
         } else {
@@ -112,8 +114,9 @@ class GameBotActivity : AppCompatActivity(), View.OnClickListener {
             playerO.add(i)
             activePlayer = 1
 
-            bot()
-
+            if (!winConditions()) {
+                bot()
+            }
         }
 
         textView.isClickable = false
@@ -181,6 +184,8 @@ class GameBotActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun activateClickable() {
+        binding.imageViewX.isClickable = true
+        binding.imageViewO.isClickable = true
         binding.textView0.isClickable = true
         binding.textView1.isClickable = true
         binding.textView2.isClickable = true

@@ -26,4 +26,5 @@
         android:layout_marginBottom="4dp"
         android:hint="@string/game_id_hint"
         android:autofillHints="Game id"/>
+
 </LinearLayout>

@@ -14,4 +14,5 @@
         android:layout_marginBottom="4dp"
         android:hint="@string/player_name"
         android:autofillHints="Player name" />
+
 </LinearLayout>

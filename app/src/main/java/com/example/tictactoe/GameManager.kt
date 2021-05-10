@@ -105,7 +105,7 @@ object GameManager {
     }
 
     fun pollGame() {
-        GameService.pollGame(gameId) { game: Game?, error: Int? ->
+        GameService.pollGame(gameId) { _: Game?, error: Int? ->
             if (error != null) {
                 //TODO give response to given error code
             } else {
