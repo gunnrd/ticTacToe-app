@@ -59,7 +59,7 @@ You can choose whether you want to play as "X" or "O". The bot that is implement
 ### Additional information
 </br>
 The classes MainActivity, GameActivity and GameBotActivity are created as activities.
-
+</br>
 
 GameManager, GameService and APIEndPoints are created as objects to make them as a singleton.
 
