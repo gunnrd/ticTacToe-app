@@ -15,6 +15,8 @@
     <string name="you_win">You win</string>
     <string name="you_lose">You lose</string>
 
+    <string name="wait_player_join">Waiting for player two to join..</string>
+    <string name="wait_for_join_toast">Game is not started before player two joins</string>
     <string name="wait_for_player_one">Waiting for player one..</string>
     <string name="wait_for_player_two">Waiting for player two..</string>
     <string name="player_left_game">Opponent left the game. You win</string>

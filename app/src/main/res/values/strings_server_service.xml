@@ -11,6 +11,7 @@
 
     <string name="server_unavailable">Server unavailable.\nPlease try again.</string>
     <string name="internal_server_error">Server error.\nGame id is incorrect.</string>
+    <string name="invalid_key">Invalid key for web service</string>
     <string name="other_error">Network response error.\nPlease try again.</string>
 
     <string name="game_service">GameService</string>

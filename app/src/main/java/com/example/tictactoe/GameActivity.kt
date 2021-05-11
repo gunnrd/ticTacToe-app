@@ -60,6 +60,10 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         gameHandler = Handler(Looper.getMainLooper())
         gameHandler.post { poll() }
 
+        if (host && binding.playerTwoValue.text.isEmpty()) {
+            binding.textViewInfo.text = context.getString(R.string.wait_player_join)
+        }
+
         if (!host && binding.textViewInfo.text.isEmpty()) {
             binding.textViewInfo.text = context.getString(R.string.wait_for_player_one)
         }
@@ -79,11 +83,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onDestroy() {
-        // Reset values due to issues with creating/joining game second time in same session.
-        GameManager.playerOne = ""
-        playerTwo = ""
-        pollState = mutableListOf()
-        GameManager.countCheckedCells = 0
+        resetGameManagerVariables()
         gameHandler.removeCallbacks(poll)
         super.onDestroy()
     }
@@ -139,6 +139,11 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private fun playGame(i: Int, textView: TextView) {
         if (!activePlayer) {
             Toast.makeText(context, context.getString(R.string.not_your_turn), Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (binding.textViewInfo.text == context.getString(R.string.wait_player_join)) {
+            Toast.makeText(context, context.getString(R.string.wait_for_join_toast), Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -213,6 +218,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
                 if (playerTwo != "" && binding.playerTwoValue.text.isEmpty()) {
                     binding.playerTwoValue.text = playerTwo
+                    binding.textViewInfo.text = ""
                 }
 
                 if (host && pollState == notifyQuitGameList) {
@@ -305,6 +311,17 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             GameManager.startNewGame()
             gameHandler.post(poll)
         }
+    }
+
+    private fun resetGameManagerVariables() {
+        GameManager.gameId = ""
+        GameManager.playerOne = ""
+        playerTwo = ""
+        state = null
+        activePlayer = false
+        GameManager.countCheckedCells = 0
+        newState = mutableListOf()
+        pollState = mutableListOf()
     }
 
     private fun activateClickable() {

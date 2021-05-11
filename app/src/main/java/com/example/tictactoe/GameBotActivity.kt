@@ -34,10 +34,12 @@ class GameBotActivity : AppCompatActivity(), View.OnClickListener {
         binding.imageViewX.setOnClickListener {
             player = 1
             binding.imageViewX.isClickable = false
+            binding.imageViewO.isClickable = false
         }
 
         binding.imageViewO.setOnClickListener {
             player = 2
+            binding.imageViewX.isClickable = false
             binding.imageViewO.isClickable = false
             bot()
         }
@@ -303,6 +305,8 @@ class GameBotActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun deactivateClickable() {
+        binding.imageViewX.isClickable = false
+        binding.imageViewO.isClickable = false
         binding.textView0.isClickable = false
         binding.textView1.isClickable = false
         binding.textView2.isClickable = false

@@ -10,8 +10,6 @@ import com.example.tictactoe.api.GameService
 import com.example.tictactoe.api.data.Game
 import com.example.tictactoe.api.data.GameState
 
-// Creator of game starts the game
-
 object GameManager {
 
     var gameId: String = ""
@@ -147,6 +145,8 @@ object GameManager {
             makeText(context, context.getString(R.string.internal_server_error), Toast.LENGTH_LONG).show()
         } else if (code == 501 || code == 502 || code == 503 || code == 504) {
             makeText(context, context.getString(R.string.server_unavailable), Toast.LENGTH_LONG).show()
+        } else if (code == 406) {
+            makeText(context, context.getString(R.string.invalid_key), Toast.LENGTH_LONG).show()
         } else {
             makeText(context, context.getString(R.string.other_error), Toast.LENGTH_LONG).show()
         }
