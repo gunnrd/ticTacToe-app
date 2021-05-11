@@ -58,12 +58,17 @@ You can choose whether you want to play as "X" or "O". The bot that is implement
 </br></br>
 ### Additional information
 </br>
-* The classes MainActivity, GameActivity and GameBotActivity are created as activities.
-* GameManager, GameService and APIEndPoints are created as objects to make them as a singleton.
-* Data class Game is parcelable and contains only players, gameId and state.
-* All strings used in the code except the log messages are sorted into different xml files according to the context to which they belong.
-* ExampleInstrumentedTest contains tests for the four requests to the server.
-* The creator of game server and API is our lecturer Christian Robere Simonsen, professor at UiA.
+The classes MainActivity, GameActivity and GameBotActivity are created as activities.
+
+GameManager, GameService and APIEndPoints are created as objects to make them as a singleton.
+
+Data class Game is parcelable and contains only players, gameId and state.
+
+All strings used in the code except the log messages are sorted into different xml files according to the context to which they belong.
+
+ExampleInstrumentedTest contains tests for the four requests to the server.
+
+The creator of game server and API is our lecturer Christian Robere Simonsen, professor at UiA.
 
 </br></br>
 <img src=".\screenshots\app_icon.jpg" alt="app_icon"  width="30%" height="30%" /> <img src=".\screenshots\app_images.jpg" alt="app_images"  width="30%" height="30%" /> 
