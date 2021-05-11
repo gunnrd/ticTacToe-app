@@ -89,7 +89,7 @@ object GameService {
 
     fun updateGame(gameId: String, state: GameState, callback: GameServiceCallback) {
         APIEndPoints.currentGameId = gameId
-        val url = APIEndPoints.updateGame()
+        val url = APIEndPoints.updateGameUrl()
         val requestData = JSONObject()
 
         requestData.put(context.getString(R.string.put_game_id), gameId)
@@ -121,7 +121,7 @@ object GameService {
 
     fun pollGame(gameId: String, callback: GameServiceCallback) {
         APIEndPoints.currentGameId = gameId
-        val url = APIEndPoints.pollGame()
+        val url = APIEndPoints.pollGameUrl()
         val requestData = JSONObject()
 
         val request = object : JsonObjectRequest(

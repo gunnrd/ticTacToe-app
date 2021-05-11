@@ -27,7 +27,7 @@ object APIEndPoints {
                 .format(currentGameId))
     }
 
-    fun updateGame(): String {
+    fun updateGameUrl(): String {
         return "%1s%2s%3s%4s".format(
             GameService.context.getString(R.string.protocol),
             GameService.context.getString(R.string.domain),
@@ -36,7 +36,7 @@ object APIEndPoints {
                 .format(currentGameId))
     }
 
-    fun pollGame(): String {
+    fun pollGameUrl(): String {
         return "%1s%2s%3s%4s".format(
             GameService.context.getString(R.string.protocol),
             GameService.context.getString(R.string.domain),
