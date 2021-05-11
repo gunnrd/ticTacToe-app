@@ -14,8 +14,8 @@ This app is a school project in the subject IKT205 - application development at 
 </br>
 The app has a GameService class that performs four calls to the API on the server. All calls are JsonObjectRequests which are added to a request queue. Polling is done every three seconds. If any of the calls result in HTTP error codes, the user will get a toast with appropriate message. 
 
-</br>
-#### Main menu
+</br></br>
+### Main menu
 </br>
 The user can create a new game, join an existing game or choose to play against a bot. When create game or join game are clicked an alert dialog is displayed as a fragment. For both cases the user is prompted to add a player name, but when joining, game id is also required. If some input fields are left empty, a toast is displayed with information of what is missing and that it is required.
 
@@ -25,7 +25,7 @@ The user can create a new game, join an existing game or choose to play against 
 
 
 </br></br>
-#### Gameplay online
+### Gameplay online
 </br>
 When a game is created GameActivity displays a message that is waiting for player two to join. The gameboard is deactivated until player two has joined. A toast is used to inform why it is not possible to start the game yet. The player that starts the game always has mark "X". Same is applied when playing against bot. Player two's name is displayed when the player has joined the game. When joining a game player two is shown a message that it is waiting for player one's first move and the gameboard is disabled until the state in the poll request has changed. To prevent cheating it is not possible to set a mark two times in a row. The app returns a toast that tells the player that it is not your turn.
 
@@ -35,7 +35,7 @@ When a game is created GameActivity displays a message that is waiting for playe
 
 </br>
 After a cell on the game board is marked, it is deactivated and it is checked whether the player has won. When receiving a poll, it is checked whether the opponent has won. During gameplay a message is displayed that it is waiting for the other players move until the state in the poll request has changed. When one of the players has won, a message is displayed stating that you have won or lost and in the event of a draw, this is displayed and the polling is stopped. After the game is finished, a button is displayed where you can start a new game with the same game id which also starts the polling again.
-</br>
+</br></br>
 If one of the players click the return button to the main menu, an alert appears which asks for confirmation for leaving the game. If one of the players returns to the main menu during gameplay, the other player will be notified that the other has left the game and that they have won. Since the server has predefined objects it accepts, I solved this by sending an update to the sever with a specific state which only contains strings of 3's. It is then checked in the poll function if received state equals this.
 
 </br></br>
@@ -47,7 +47,7 @@ Testing of the apk for the app revealed that randomly selected cells sometimes a
 
 
 </br></br>
-#### Gameplay vs bot
+### Gameplay vs bot
 </br>
 You can choose whether you want to play as "X" or "O". The bot that is implemented does not take into account that it will block your chances of winning or try to win itself. It randomly sets marks in the available cells. This can be improved in the future to make it smarter and set it's marks based on where you choose to put your marks. The status display when the game is finished is implemented in the same way as when playing online. The button to start a new game appears and you can again choose which mark you want to play with.
 
@@ -56,7 +56,7 @@ You can choose whether you want to play as "X" or "O". The bot that is implement
 
 
 </br></br>
-#### Additional information
+### Additional information
 </br>
 The classes MainActivity, GameActivity and GameBotActivity are created as activities. GameManager, GameService and APIEndPoints are created as objects to make them as a singleton. Data class Game is parcelable and contains only players, gameId and state.
 
