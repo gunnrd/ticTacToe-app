@@ -58,12 +58,7 @@ You can choose whether you want to play as "X" or "O". The bot that is implement
 </br></br>
 ### Additional information
 </br>
-The classes MainActivity, GameActivity and GameBotActivity are created as activities.
-</br>
-
-GameManager, GameService and APIEndPoints are created as objects to make them as a singleton.
-
-Data class Game is parcelable and contains only players, gameId and state.
+The classes MainActivity, GameActivity and GameBotActivity are created as activities. GameManager, GameService and APIEndPoints are created as objects to make them as a singleton. Data class Game is parcelable and contains only players, gameId and state.
 
 All strings used in the code except the log messages are sorted into different xml files according to the context to which they belong.
 
