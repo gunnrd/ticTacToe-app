@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.tictactoe.GameManager.activePlayer
+import com.example.tictactoe.GameManager.countCheckedCells
 import com.example.tictactoe.GameManager.host
 import com.example.tictactoe.GameManager.newState
 import com.example.tictactoe.GameManager.playerTwo
@@ -165,7 +166,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun checkWinner() {
         when {
-            GameManager.countCheckedCells == 9 && !winConditions() -> {
+            countCheckedCells == 9 && !winConditions() -> {
                 binding.textViewInfo.text = context.getString(R.string.draw)
                 binding.buttonStartNewGame.isVisible = true
                 newState = gameStateStart.flatten() as MutableList<String>
@@ -206,9 +207,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private fun poll() {
         if (GameManager.gameId != "") {
 
-            if (binding.textViewInfo.text == context.getString(R.string.you_win) ||
-                binding.textViewInfo.text == context.getString(R.string.you_lose) ||
-                binding.textViewInfo.text == context.getString(R.string.draw)) {
+            if (countCheckedCells == 9 && binding.textViewInfo.text == context.getString(R.string.you_win) ||
+                binding.textViewInfo.text == context.getString(R.string.you_lose) || binding.textViewInfo.text == context.getString(R.string.draw)) {
                 return
             }
 
@@ -319,7 +319,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         playerTwo = ""
         state = null
         activePlayer = false
-        GameManager.countCheckedCells = 0
+        countCheckedCells = 0
         newState = mutableListOf()
         pollState = mutableListOf()
     }
